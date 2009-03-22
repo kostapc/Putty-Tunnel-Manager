@@ -1,7 +1,3 @@
-#Quick guide to start with PuTTY Tunnel Manager.
-
-== Quick guide ==
-
 PuTTY Tunnel Manager was created for people that are already using PuTTY for their SSH sessions and want easier access to PuTTY's tunnels. PuTTY itself is not required. PuTTY Tunnel Manager simply uses the same location to store sessions, so you don't have to add all your hosts twice.
 
 === Download and installation ===

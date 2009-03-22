@@ -36,7 +36,6 @@ A tunnel (in this case) is an encrypted tunnel, created over an existing SSH con
  # Right click the PuTTY Tunnel Manager icon in your system tray
  # Click on _Tunnels >_ and select a session (ie. Development server)
 
-[http://putty-tunnel-manager.googlecode.com/files/icon.png]
 [http://putty-tunnel-manager.googlecode.com/files/traymenu.png]
 
 *Show which sessions and tunnels are open*

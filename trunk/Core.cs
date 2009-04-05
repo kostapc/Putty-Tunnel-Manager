@@ -65,5 +65,21 @@ namespace JoeriBekker.PuttyTunnelManager
         {
             get { return this.sessions; }
         }
+
+        public List<Tunnel> Tunnels
+        {
+            get
+            {
+                List<Tunnel> tunnels = new List<Tunnel>();
+                foreach (Session session in this.Sessions)
+                {
+                    foreach (Tunnel tunnel in session.Tunnels)
+                    {
+                        tunnels.Add(tunnel);
+                    }
+                }
+                return tunnels;
+            }
+        }
     }
 }

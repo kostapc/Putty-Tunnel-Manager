@@ -31,30 +31,56 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 {
     public partial class AddSessionForm : Form
     {
+        private int port;
+
         public AddSessionForm()
         {
             InitializeComponent();
+
+            this.port = -1;
         }
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
+            if (!this.ValidateChildren())
+                return;
+
+            foreach (Session session in Core.Instance().Sessions)
+            {
+                if (session.Name.Equals(this.SessionName))
+                {
+                    MessageBox.Show(this, "A session with this name already exists. Please choose another name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.sessionNameTexBox.Focus();
+
+                    return;
+                }
+            }
+
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
         public string SessionName
         {
-            get { return this.sessionName.Text; }
+            get { return this.sessionNameTexBox.Text; }
         }
 
         public string Hostname
         {
-            get { return this.hostname.Text; }
+            get { return this.hostnameTextBox.Text; }
         }
 
         public int Port
         {
-            get { return Int32.Parse(this.port.Text); }
+            get { return port; }
+        }
+
+        private void portTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            int port = FormUtils.ValidatePortTextBox(sender, e);
+
+            if (!e.Cancel)
+                this.port = port;
         }
     }
 }

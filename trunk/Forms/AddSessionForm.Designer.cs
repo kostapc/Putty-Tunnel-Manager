@@ -31,9 +31,9 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.port = new System.Windows.Forms.TextBox();
-            this.hostname = new System.Windows.Forms.TextBox();
-            this.sessionName = new System.Windows.Forms.TextBox();
+            this.portTextBox = new System.Windows.Forms.TextBox();
+            this.hostnameTextBox = new System.Windows.Forms.TextBox();
+            this.sessionNameTexBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,6 +43,7 @@
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCancel.CausesValidation = false;
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Location = new System.Drawing.Point(374, 110);
             this.buttonCancel.Name = "buttonCancel";
@@ -67,9 +68,9 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.port);
-            this.groupBox1.Controls.Add(this.hostname);
-            this.groupBox1.Controls.Add(this.sessionName);
+            this.groupBox1.Controls.Add(this.portTextBox);
+            this.groupBox1.Controls.Add(this.hostnameTextBox);
+            this.groupBox1.Controls.Add(this.sessionNameTexBox);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
@@ -79,26 +80,27 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
-            // port
+            // portTextBox
             // 
-            this.port.Location = new System.Drawing.Point(88, 65);
-            this.port.Name = "port";
-            this.port.Size = new System.Drawing.Size(68, 20);
-            this.port.TabIndex = 2;
+            this.portTextBox.Location = new System.Drawing.Point(88, 65);
+            this.portTextBox.Name = "portTextBox";
+            this.portTextBox.Size = new System.Drawing.Size(68, 20);
+            this.portTextBox.TabIndex = 2;
+            this.portTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.portTextBox_Validating);
             // 
-            // hostname
+            // hostnameTextBox
             // 
-            this.hostname.Location = new System.Drawing.Point(88, 39);
-            this.hostname.Name = "hostname";
-            this.hostname.Size = new System.Drawing.Size(342, 20);
-            this.hostname.TabIndex = 1;
+            this.hostnameTextBox.Location = new System.Drawing.Point(88, 39);
+            this.hostnameTextBox.Name = "hostnameTextBox";
+            this.hostnameTextBox.Size = new System.Drawing.Size(342, 20);
+            this.hostnameTextBox.TabIndex = 1;
             // 
-            // sessionName
+            // sessionNameTexBox
             // 
-            this.sessionName.Location = new System.Drawing.Point(88, 13);
-            this.sessionName.Name = "sessionName";
-            this.sessionName.Size = new System.Drawing.Size(342, 20);
-            this.sessionName.TabIndex = 0;
+            this.sessionNameTexBox.Location = new System.Drawing.Point(88, 13);
+            this.sessionNameTexBox.Name = "sessionNameTexBox";
+            this.sessionNameTexBox.Size = new System.Drawing.Size(342, 20);
+            this.sessionNameTexBox.TabIndex = 0;
             // 
             // label3
             // 
@@ -154,11 +156,11 @@
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonOk;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox sessionName;
+        private System.Windows.Forms.TextBox sessionNameTexBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox port;
-        private System.Windows.Forms.TextBox hostname;
+        private System.Windows.Forms.TextBox portTextBox;
+        private System.Windows.Forms.TextBox hostnameTextBox;
     }
 }

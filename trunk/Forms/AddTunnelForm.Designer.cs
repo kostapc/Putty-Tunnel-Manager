@@ -30,10 +30,10 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.labelDestinationPort = new System.Windows.Forms.Label();
-            this.destinationPort = new System.Windows.Forms.TextBox();
+            this.destinationPortTextBox = new System.Windows.Forms.TextBox();
             this.labelDestination = new System.Windows.Forms.Label();
-            this.destination = new System.Windows.Forms.TextBox();
-            this.sourcePort = new System.Windows.Forms.TextBox();
+            this.destinationTextBox = new System.Windows.Forms.TextBox();
+            this.sourcePortTextBox = new System.Windows.Forms.TextBox();
             this.labelSourcePort = new System.Windows.Forms.Label();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
@@ -46,10 +46,10 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.labelDestinationPort);
-            this.groupBox1.Controls.Add(this.destinationPort);
+            this.groupBox1.Controls.Add(this.destinationPortTextBox);
             this.groupBox1.Controls.Add(this.labelDestination);
-            this.groupBox1.Controls.Add(this.destination);
-            this.groupBox1.Controls.Add(this.sourcePort);
+            this.groupBox1.Controls.Add(this.destinationTextBox);
+            this.groupBox1.Controls.Add(this.sourcePortTextBox);
             this.groupBox1.Controls.Add(this.labelSourcePort);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
@@ -66,12 +66,13 @@
             this.labelDestinationPort.TabIndex = 5;
             this.labelDestinationPort.Text = "Remote port:";
             // 
-            // destinationPort
+            // destinationPortTextBox
             // 
-            this.destinationPort.Location = new System.Drawing.Point(82, 65);
-            this.destinationPort.Name = "destinationPort";
-            this.destinationPort.Size = new System.Drawing.Size(56, 20);
-            this.destinationPort.TabIndex = 2;
+            this.destinationPortTextBox.Location = new System.Drawing.Point(82, 65);
+            this.destinationPortTextBox.Name = "destinationPortTextBox";
+            this.destinationPortTextBox.Size = new System.Drawing.Size(56, 20);
+            this.destinationPortTextBox.TabIndex = 2;
+            this.destinationPortTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.destinationPortTextBox_Validating);
             // 
             // labelDestination
             // 
@@ -82,20 +83,21 @@
             this.labelDestination.TabIndex = 3;
             this.labelDestination.Text = "Remote host:";
             // 
-            // destination
+            // destinationTextBox
             // 
-            this.destination.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.destination.Location = new System.Drawing.Point(82, 39);
-            this.destination.Name = "destination";
-            this.destination.Size = new System.Drawing.Size(349, 20);
-            this.destination.TabIndex = 1;
+            this.destinationTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.destinationTextBox.Location = new System.Drawing.Point(82, 39);
+            this.destinationTextBox.Name = "destinationTextBox";
+            this.destinationTextBox.Size = new System.Drawing.Size(349, 20);
+            this.destinationTextBox.TabIndex = 1;
             // 
-            // sourcePort
+            // sourcePortTextBox
             // 
-            this.sourcePort.Location = new System.Drawing.Point(82, 13);
-            this.sourcePort.Name = "sourcePort";
-            this.sourcePort.Size = new System.Drawing.Size(56, 20);
-            this.sourcePort.TabIndex = 0;
+            this.sourcePortTextBox.Location = new System.Drawing.Point(82, 13);
+            this.sourcePortTextBox.Name = "sourcePortTextBox";
+            this.sourcePortTextBox.Size = new System.Drawing.Size(56, 20);
+            this.sourcePortTextBox.TabIndex = 0;
+            this.sourcePortTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.sourcePortTextBox_Validating);
             // 
             // labelSourcePort
             // 
@@ -109,6 +111,7 @@
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCancel.CausesValidation = false;
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Location = new System.Drawing.Point(374, 110);
             this.buttonCancel.Name = "buttonCancel";
@@ -155,11 +158,11 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonOk;
-        private System.Windows.Forms.TextBox sourcePort;
+        private System.Windows.Forms.TextBox sourcePortTextBox;
         private System.Windows.Forms.Label labelSourcePort;
         private System.Windows.Forms.Label labelDestinationPort;
-        private System.Windows.Forms.TextBox destinationPort;
+        private System.Windows.Forms.TextBox destinationPortTextBox;
         private System.Windows.Forms.Label labelDestination;
-        private System.Windows.Forms.TextBox destination;
+        private System.Windows.Forms.TextBox destinationTextBox;
     }
 }

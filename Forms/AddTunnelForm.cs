@@ -32,12 +32,16 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
     public partial class AddTunnelForm : Form
     {
         private TunnelType tunnelType;
+        private int sourcePort;
+        private int destinationPort;
 
         public AddTunnelForm(TunnelType tunnelType)
         {
             InitializeComponent();
 
             this.tunnelType = tunnelType;
+            this.sourcePort = -1;
+            this.destinationPort = -1;
 
             switch (tunnelType)
             {
@@ -58,38 +62,26 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                     this.labelSourcePort.Text = "Local port:";
 
                     this.labelDestination.Hide();
-                    this.destination.Hide();
+                    this.destinationTextBox.Hide();
                     this.labelDestinationPort.Hide();
-                    this.destinationPort.Hide();
+                    this.destinationPortTextBox.Hide();
                     break;
             }
         }
 
         public int SourcePort
         {
-            get { return Int32.Parse(this.sourcePort.Text); }
+            get { return this.sourcePort; }
         }
 
         public string Destination
         {
-            get { return this.destination.Text; }
+            get { return this.destinationTextBox.Text; }
         }
 
         public int DestinationPort
         {
-            get
-            {
-                int port = 0;
-                try
-                {
-                    port = Int32.Parse(this.destinationPort.Text);
-                }
-                catch (Exception)
-                {
-                    // Intentionally empty.
-                }
-                return port;
-            }
+            get { return this.destinationPort; }
         }
 
         public TunnelType TunnelType
@@ -99,9 +91,45 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
+            if (!this.ValidateChildren())
+                return;
+
+            if (tunnelType != TunnelType.REMOTE)
+            {
+                foreach (Tunnel tunnel in Core.Instance().Tunnels)
+                {
+                    if (tunnel.SourcePort == this.sourcePort)
+                    {
+                        if (DialogResult.No == MessageBox.Show(this, "Local port " + this.sourcePort + " is already used by " + tunnel.Session.Name + ". Are you sure you want to use this port?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            break; // Just ask once.
+                        }
+                    }
+                }
+            }
+
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
+        private void sourcePortTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            int port = FormUtils.ValidatePortTextBox(sender, e);
+
+            if (!e.Cancel)
+                this.sourcePort = port;
+        }
+
+        private void destinationPortTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            int port = FormUtils.ValidatePortTextBox(sender, e);
+
+            if (!e.Cancel)
+                this.destinationPort = port;
+        }
     }
 }

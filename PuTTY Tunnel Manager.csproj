@@ -86,6 +86,7 @@
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Core.cs" />
+    <Compile Include="FormUtils.cs" />
     <Compile Include="PlinkNotFoundException.cs" />
     <Compile Include="PortAlreadyInUseException.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

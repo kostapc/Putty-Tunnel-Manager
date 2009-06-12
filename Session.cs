@@ -228,13 +228,13 @@ namespace JoeriBekker.PuttyTunnelManager
 
             Session session = new Session(
                 Uri.UnescapeDataString(keyName),
-                puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_HOSTNAME).ToString(),
-                Int32.Parse(puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_PORTNUMBER).ToString())
+                puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_HOSTNAME, "").ToString(),
+                Int32.Parse(puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_PORTNUMBER, "22").ToString())
             );
 
-            session.Username = puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_USERNAME).ToString();
-            session.Compression = puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_COMPRESSION).Equals(1);
-            session.LocalPortsAcceptAll = puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_LOCALPORTACCEPTALL).Equals(1);
+            session.Username = puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_USERNAME, "").ToString();
+            session.Compression = puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_COMPRESSION, 0).Equals(1);
+            session.LocalPortsAcceptAll = puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_LOCALPORTACCEPTALL, 0).Equals(1);
 
             string ptmKeyPath = PuttyTunnelManagerSettings.PTM_REGISTRY_KEYPATH_SESSIONS + @"\" + keyName;
             RegistryKey ptmSessionKey = Registry.CurrentUser.OpenSubKey(ptmKeyPath);
@@ -246,7 +246,7 @@ namespace JoeriBekker.PuttyTunnelManager
             }
 
             string[] portForwardingList;
-            if (session.UsePtmForTunnels)
+            if (session.UsePtmForTunnels && ptmSessionKey != null)
             {
                 portForwardingList = ptmSessionKey.GetValue(PTM_REGISTRY_KEY_SESSION_PORTFORWARDINGS, "").ToString().Split(',');
                 ptmSessionKey.Close();

@@ -97,6 +97,8 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             // General
             this.sessionName.Text = session.Name;
             this.storeTunnelsSeparate.Checked = session.UsePtmForTunnels;
+            this.chkAutoConnect.Enabled = session.UsePtmForTunnels;
+            this.chkAutoConnect.Checked = session.AutoConnect;
 
             // SSH
             this.hostname.Text = session.Hostname;
@@ -276,6 +278,8 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                 }
 
                 this.storeTunnelsSeparate.Checked = this.selectedSession.UsePtmForTunnels;
+                this.chkAutoConnect.Enabled = this.storeTunnelsSeparate.Checked;
+                this.chkAutoConnect.Checked = this.selectedSession.AutoConnect;
                 this.selectedSession.Serialize();
 
                 this.SwitchSession(this, null);
@@ -314,6 +318,17 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
         private void SettingsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Field_Leave(this.ActiveControl, null);
+        }
+
+        private void chkAutoConnect_Clicked(object sender, EventArgs e)
+        {
+            if (this.selectedSession != null)
+            {
+                this.selectedSession.AutoConnect = !this.chkAutoConnect.Checked;
+                this.selectedSession.Serialize();
+
+                this.SwitchSession(this, null);
+            }
         }
     }
 }

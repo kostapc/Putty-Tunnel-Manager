@@ -40,6 +40,7 @@ namespace JoeriBekker.PuttyTunnelManager
 
         public static string PTM_REGISTRY_KEY_SESSION_PORTFORWARDINGS       = "PortForwardings";
         public static string PTM_REGISTRY_KEY_SESSION_USEPTMFORTUNNELS      = "UsePtmForTunnels";
+        public static string PTM_REGISTRY_KEY_SESSION_AUTOCONNECT           = "AutoConnect";
 
         private string name;
         private string hostname;
@@ -49,6 +50,7 @@ namespace JoeriBekker.PuttyTunnelManager
         private bool localPortsAcceptAll;
         private List<Tunnel> tunnels;
 
+        private bool autoConnect;
         private bool usePtmForTunnels;
         private PuttyLink puttyLink;
 
@@ -140,6 +142,12 @@ namespace JoeriBekker.PuttyTunnelManager
             set { this.usePtmForTunnels = value; }
         }
 
+        public bool AutoConnect
+        {
+            get { return this.autoConnect; }
+            set { this.autoConnect = value; }
+        }
+
         public List<Tunnel> Tunnels
         {
             get { return tunnels; }
@@ -211,6 +219,8 @@ namespace JoeriBekker.PuttyTunnelManager
                 RegistryKey ptmSessionKey = Registry.CurrentUser.CreateSubKey(this.PuttyTunnelManagerKeyPath);
                 ptmSessionKey.SetValue(PTM_REGISTRY_KEY_SESSION_PORTFORWARDINGS, buffer.ToString(), RegistryValueKind.String);
                 ptmSessionKey.SetValue(PTM_REGISTRY_KEY_SESSION_USEPTMFORTUNNELS, this.usePtmForTunnels, RegistryValueKind.DWord);
+                ptmSessionKey.SetValue(PTM_REGISTRY_KEY_SESSION_AUTOCONNECT, this.autoConnect, RegistryValueKind.DWord);
+                
                 ptmSessionKey.Close();
             }
             else
@@ -249,6 +259,7 @@ namespace JoeriBekker.PuttyTunnelManager
             if (session.UsePtmForTunnels && ptmSessionKey != null)
             {
                 portForwardingList = ptmSessionKey.GetValue(PTM_REGISTRY_KEY_SESSION_PORTFORWARDINGS, "").ToString().Split(',');
+                session.AutoConnect = ptmSessionKey.GetValue(PTM_REGISTRY_KEY_SESSION_AUTOCONNECT, 0).Equals(1);
                 ptmSessionKey.Close();
             }
             else

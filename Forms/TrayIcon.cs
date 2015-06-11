@@ -49,9 +49,11 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
             this.tipForm = new TipForm();
             this.aboutForm = new AboutForm();
+
+            UpdateSessions(true);
         }
 
-        public void UpdateSessions()
+        public void UpdateSessions(bool first)
         {
             this.menuTunnels.Enabled = false;
 
@@ -72,6 +74,9 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                     sessionItem.Tag = session;
                     sessionItem.Click += new EventHandler(MenuSession_Click);
 
+                    if (first && session.AutoConnect)
+                        OpenSession(session, sessionItem);
+
                     if (session.IsOpen)
                         sessionItem.Checked = true;
                 }
@@ -90,23 +95,30 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             }
             else
             {
-                try
-                {
-                    session.Open();
-                    sessionItem.Checked = true;
-                }
-                catch (SessionAlreadyOpenException)
-                {
-                    MessageBox.Show("Session already open.");
-                }
-                catch (PortAlreadyInUseException ex)
-                {
-                    MessageBox.Show("Cannot start " + ex.Tunnel.Session.Name + ". Port " + ex.Tunnel.SourcePort + " is already in use.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                catch (PlinkNotFoundException)
-                {
-                    MessageBox.Show("Could not find plink.exe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                OpenSession(session, sessionItem);
+            }
+        }
+
+        private static void OpenSession(Session session, ToolStripMenuItem sessionItem)
+        {
+            try
+            {
+                session.Open();
+                sessionItem.Checked = true;
+            }
+            catch (SessionAlreadyOpenException)
+            {
+                MessageBox.Show("Session already open.");
+            }
+            catch (PortAlreadyInUseException ex)
+            {
+                MessageBox.Show(
+                    "Cannot start " + ex.Tunnel.Session.Name + ". Port " + ex.Tunnel.SourcePort + " is already in use.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (PlinkNotFoundException)
+            {
+                MessageBox.Show("Could not find plink.exe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -141,7 +153,7 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
         private void Menu_Opening(object sender, CancelEventArgs e)
         {
-            this.UpdateSessions();
+            this.UpdateSessions(false);
         }
 
         private void MenuAbout_Click(object sender, EventArgs e)

@@ -29,11 +29,12 @@
         private void InitializeComponent()
         {
             this.sessions = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
             this.sessionDetails = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.chkAutoConnect = new System.Windows.Forms.CheckBox();
             this.storeTunnelsSeparate = new System.Windows.Forms.CheckBox();
             this.sessionName = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -50,21 +51,21 @@
             this.buttonAddLocalPort = new System.Windows.Forms.Button();
             this.buttonDeleteLocalPort = new System.Windows.Forms.Button();
             this.localPorts = new System.Windows.Forms.ListView();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.buttonAddRemotePort = new System.Windows.Forms.Button();
             this.buttonDeleteRemotePort = new System.Windows.Forms.Button();
             this.remotePorts = new System.Windows.Forms.ListView();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.buttonAddDynamicPort = new System.Windows.Forms.Button();
             this.buttonDeleteDynamicPort = new System.Windows.Forms.Button();
             this.dynamicPorts = new System.Windows.Forms.ListView();
-            this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonDeleteSession = new System.Windows.Forms.Button();
             this.buttonAddSession = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -133,6 +134,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.chkAutoConnect);
             this.tabPage1.Controls.Add(this.storeTunnelsSeparate);
             this.tabPage1.Controls.Add(this.sessionName);
             this.tabPage1.Controls.Add(this.label7);
@@ -144,13 +146,26 @@
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // chkAutoConnect
+            // 
+            this.chkAutoConnect.AutoCheck = false;
+            this.chkAutoConnect.AutoSize = true;
+            this.chkAutoConnect.Enabled = false;
+            this.chkAutoConnect.Location = new System.Drawing.Point(9, 62);
+            this.chkAutoConnect.Name = "chkAutoConnect";
+            this.chkAutoConnect.Size = new System.Drawing.Size(116, 17);
+            this.chkAutoConnect.TabIndex = 3;
+            this.chkAutoConnect.Text = "Connect on startup";
+            this.chkAutoConnect.UseVisualStyleBackColor = true;
+            this.chkAutoConnect.Click += new System.EventHandler(this.chkAutoConnect_Clicked);
+            // 
             // storeTunnelsSeparate
             // 
             this.storeTunnelsSeparate.AutoCheck = false;
             this.storeTunnelsSeparate.AutoSize = true;
             this.storeTunnelsSeparate.Location = new System.Drawing.Point(9, 39);
             this.storeTunnelsSeparate.Name = "storeTunnelsSeparate";
-            this.storeTunnelsSeparate.Size = new System.Drawing.Size(224, 17);
+            this.storeTunnelsSeparate.Size = new System.Drawing.Size(238, 17);
             this.storeTunnelsSeparate.TabIndex = 1;
             this.storeTunnelsSeparate.Text = "Use PuTTY Tunnel Manager to store tunnels";
             this.storeTunnelsSeparate.UseVisualStyleBackColor = true;
@@ -305,9 +320,9 @@
             // 
             // localPorts
             // 
-            this.localPorts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.localPorts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.localPorts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader2,
             this.columnHeader3,
@@ -376,9 +391,9 @@
             // 
             // remotePorts
             // 
-            this.remotePorts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.remotePorts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.remotePorts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader5,
             this.columnHeader6,
@@ -447,9 +462,9 @@
             // 
             // dynamicPorts
             // 
-            this.dynamicPorts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dynamicPorts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dynamicPorts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader8});
             this.dynamicPorts.FullRowSelect = true;
@@ -571,8 +586,8 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
-            this.Shown += new System.EventHandler(this.SettingsForm_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsForm_FormClosing);
+            this.Shown += new System.EventHandler(this.SettingsForm_Shown);
             this.sessionDetails.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -637,6 +652,7 @@
         private System.Windows.Forms.ListView dynamicPorts;
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ColumnHeader columnHeader11;
+        private System.Windows.Forms.CheckBox chkAutoConnect;
     }
 }
 

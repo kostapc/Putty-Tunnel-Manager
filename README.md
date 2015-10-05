@@ -23,7 +23,7 @@ PuTTY Tunnel Manager allows you to easily open tunnels, that are defined in a Pu
 
 Like PuTTY, this program is just a single executable file. You will need Microsoft's .NET Framework version 2 or higher to start it but you'll probably have it already.
 
-1. Download the latest version from this page and place it in your PuTTY directory, or any other directory.
+1. Download the latest version from this [page](https://github.com/kthompson/putty-tunnel-manager/releases) and place it in your PuTTY directory, or any other directory.
 1. Download Plink (plink.exe) from [here](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and place it in the same directory.
 1. Start PuTTY Tunnel Manager (ptman.exe).
 1. If you put ptman.exe and plink.exe in the same directory, you're ready to go. If not, the settings window will show and you should point to plink.exe yourself.

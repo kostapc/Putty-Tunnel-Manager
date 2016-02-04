@@ -88,14 +88,15 @@ namespace JoeriBekker.PuttyTunnelManager
         {
             string[] parts = data.Substring(1).Split('=', ':');
 
-            int sourcePort = Int32.Parse(parts[0]);
+            int sourcePort = parsePuTTYPort(parts[0]);
             string destination = "";
             int destinationPort = 0;
 
             if (parts.Length > 1)
             {
                 destination = parts[1];
-                destinationPort = Int32.Parse(parts[2]);
+                
+                destinationPort = parsePuTTYPort(parts[2]);
             }
 
             TunnelType type;
@@ -108,6 +109,13 @@ namespace JoeriBekker.PuttyTunnelManager
             }
 
             return new Tunnel(session, sourcePort, destination, destinationPort, type);
+        }
+
+        private static int parsePuTTYPort(String portString)
+        {
+            return Int32.Parse(
+                portString.TrimStart(new char[] { 'D', 'L', 'R' })
+            );
         }
 
         public override bool Equals(object obj)

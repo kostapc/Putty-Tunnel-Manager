@@ -16,3 +16,6 @@ PuTTY Tunnel Manager allows you to easily open tunnels, that are defined in a Pu
 * Reconnects when your PC wakes up from stand-by
 * Simple interface
 * One file, small size, with a cool icon
+
+# Source
+The original source code comes from https://code.google.com/archive/p/putty-tunnel-manager/

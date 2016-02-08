@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>JoeriBekker.PuttyTunnelManager</RootNamespace>
     <AssemblyName>ptman</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>JoeriBekker.PuttyTunnelManager.Program</StartupObject>
     <ApplicationIcon>Resources\ptm.ico</ApplicationIcon>

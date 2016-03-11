@@ -38,4 +38,25 @@ namespace JoeriBekker.PuttyTunnelManager
             return result;
         }
     }
+
+    public partial class InfoForm : Form
+    {
+        public InfoForm()
+        {
+            updateLocation();
+        }
+
+        public void updateLocation()
+        {
+            this.Location = calculateLocation();
+        }
+
+        private Point calculateLocation()
+        {
+            return new Point(
+                Screen.PrimaryScreen.WorkingArea.Right - this.Width,
+                Screen.PrimaryScreen.WorkingArea.Bottom - this.Height);
+        }
+        
+    }
 }

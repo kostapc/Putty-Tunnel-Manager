@@ -29,7 +29,7 @@ using System.Windows.Forms;
 
 namespace JoeriBekker.PuttyTunnelManager.Forms
 {
-    public partial class TipForm : Form
+    public partial class TipForm : InfoForm
     {
         public TipForm()
         {

@@ -26,6 +26,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 using JoeriBekker.PuttyTunnelManager.Forms;
+using System.Collections.Generic;
 
 namespace JoeriBekker.PuttyTunnelManager
 {
@@ -35,6 +36,8 @@ namespace JoeriBekker.PuttyTunnelManager
         private Process process;
         private Thread guardian;
         private bool active;
+
+        MessageForm messageForm = null;
 
         public PuttyLink(Session session)
         {
@@ -50,6 +53,8 @@ namespace JoeriBekker.PuttyTunnelManager
             this.guardian.Priority = ThreadPriority.Lowest;
 
             this.active = false;
+            messageForm = new MessageForm(this.session.Name);
+
         }
 
         public Session Session
@@ -64,10 +69,10 @@ namespace JoeriBekker.PuttyTunnelManager
 
         public void Start()
         {
-            this.Start(true);
+            this.Start(true, false);
         }
 
-        public void Start(bool interactive)
+        public void Start(bool interactive, bool restart)
         {
             if (!PuttyTunnelManagerSettings.Instance().HasPlink)
             {
@@ -75,10 +80,13 @@ namespace JoeriBekker.PuttyTunnelManager
             }
 
             this.active = true;
-            Session.OpenSessions.Add(this.session);
+            if(!restart)
+            {
+                Session.OpenSessions.Add(this.session);          
+                this.guardian.Start();
+            }            
 
-            this.guardian.Start();
-            Debug.WriteLine("Plink: Starting Guardian!");
+            
 
             if (interactive)
             {
@@ -109,6 +117,7 @@ namespace JoeriBekker.PuttyTunnelManager
             this.process.StartInfo.Arguments = args.ToString();
             this.process.Start();
             Debug.WriteLine("Plink: Started!");
+            this.messageForm.SetStatus("reconnecting...");
 
             if (interactive)
             {
@@ -140,15 +149,25 @@ namespace JoeriBekker.PuttyTunnelManager
                             this.process.StandardInput.WriteLine(username);
                         }
                         else
+                        {
                             Stop();
+                        }
                     }
                     else if (data.Contains("password"))
                     {
-                        LoginForm form = new LoginForm(username);
-                        if (form.ShowDialog() == DialogResult.OK)
-                            this.process.StandardInput.WriteLine(form.Password);
-                        else
+                        if(session.Password==null)
+                        {
+                            LoginForm form = new LoginForm(username);
+                            if (form.ShowDialog() == DialogResult.OK)
+                            {
+                                session.Password = form.Password;                                
+                            }
+                        }
+                        if(session.Password==null)
+                        {
                             Stop();
+                        }
+                        this.process.StandardInput.WriteLine(session.Password);                        
                     }
                     this.process.StandardOutput.DiscardBufferedData();
                     buffer.Remove(0, buffer.Length);
@@ -178,6 +197,7 @@ namespace JoeriBekker.PuttyTunnelManager
 
         private void Guardian()
         {
+            Debug.WriteLine("Plink: Starting Guardian!");
             try
             {
                 do
@@ -186,14 +206,29 @@ namespace JoeriBekker.PuttyTunnelManager
                     if (this.process.HasExited)
                     {
                         Debug.WriteLine("Guardian: Stopped due to Plink termination!");
-                        return;
-                    }
+
+                        messageForm.SetStatus("terminated");
+                        messageForm.Show();
+
+                        Thread runner = new Thread(()=>{
+                            this.Start(true, true);
+                        });
+                        runner.IsBackground = true;
+                        runner.Priority = ThreadPriority.Lowest;
+                        runner.Start();                                              
+
+                    }                    
+                    messageForm.Hide();
                     Debug.WriteLine("Guardian: Plink is alive!");
 
                 } while (this.process.Responding);
                 Debug.WriteLine("Guardian: Plink stopped responding!");
             }
-            catch (Exception) { }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Guardian: Exception! "+e.Message);
+                Debug.WriteLine(e.StackTrace);
+            }
             finally
             {
                 if (!this.process.HasExited)

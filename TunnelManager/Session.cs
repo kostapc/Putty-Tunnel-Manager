@@ -49,6 +49,7 @@ namespace JoeriBekker.PuttyTunnelManager
         private string name;
         private string hostname;
         private string username;
+        private string password = null;
         private int port;
         private bool compression;
         private bool localPortsAcceptAll;
@@ -119,6 +120,12 @@ namespace JoeriBekker.PuttyTunnelManager
         {
             get { return this.username; }
             set { this.username = value; }
+        }
+
+        public string Password
+        {
+            get { return this.password; }
+            set { this.password = value; }
         }
 
         public int Port

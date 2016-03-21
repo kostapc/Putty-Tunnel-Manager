@@ -37,8 +37,6 @@ namespace JoeriBekker.PuttyTunnelManager
         private Thread guardian;
         private bool active;
 
-        MessageForm messageForm = null;
-
         public PuttyLink(Session session)
         {
             this.session = session;
@@ -53,7 +51,6 @@ namespace JoeriBekker.PuttyTunnelManager
             this.guardian.Priority = ThreadPriority.Lowest;
 
             this.active = false;
-            messageForm = new MessageForm(this.session.Name);
 
         }
 
@@ -84,9 +81,7 @@ namespace JoeriBekker.PuttyTunnelManager
             {
                 Session.OpenSessions.Add(this.session);          
                 this.guardian.Start();
-            }            
-
-            
+            }
 
             if (interactive)
             {
@@ -117,12 +112,11 @@ namespace JoeriBekker.PuttyTunnelManager
             this.process.StartInfo.Arguments = args.ToString();
             this.process.Start();
             Debug.WriteLine("Plink: Started!");
-            this.messageForm.SetStatus("reconnecting...");
 
             if (interactive)
             {
                 this.process.StandardInput.AutoFlush = true;
-
+                var plinkstart = true;
                 StringBuilder buffer = new StringBuilder();
                 string username = this.session.Username;
                 while (!this.process.HasExited)
@@ -134,6 +128,12 @@ namespace JoeriBekker.PuttyTunnelManager
                     }
 
                     string data = buffer.ToString().ToLower();
+
+                    if(plinkstart && data.Length==0)
+                    {
+                        // TODO: automatic accept new cert at first connection
+                        throw new CurruptedSessionException();
+                    }
 
                     if (data.Contains("login"))
                     {
@@ -167,7 +167,8 @@ namespace JoeriBekker.PuttyTunnelManager
                         {
                             Stop();
                         }
-                        this.process.StandardInput.WriteLine(session.Password);                        
+                        this.process.StandardInput.WriteLine(session.Password);
+                        plinkstart = false;                    
                     }
                     this.process.StandardOutput.DiscardBufferedData();
                     buffer.Remove(0, buffer.Length);
@@ -192,34 +193,26 @@ namespace JoeriBekker.PuttyTunnelManager
                 this.process.Kill();
                 Debug.WriteLine("Plink: Killed!");
             }
-            catch (Exception) { }
+            catch (Exception e)  {
+                Debug.WriteLine(e);
+            }
         }
 
         private void Guardian()
         {
             Debug.WriteLine("Plink: Starting Guardian!");
+            var restart = true;
             try
             {
                 do
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(500);
                     if (this.process.HasExited)
                     {
                         Debug.WriteLine("Guardian: Stopped due to Plink termination!");
-
-                        messageForm.SetStatus("terminated");
-                        messageForm.Show();
-
-                        Thread runner = new Thread(()=>{
-                            this.Start(true, true);
-                        });
-                        runner.IsBackground = true;
-                        runner.Priority = ThreadPriority.Lowest;
-                        runner.Start();                                              
-
-                    }                    
-                    messageForm.Hide();
-                    Debug.WriteLine("Guardian: Plink is alive!");
+                        return;                                                                   
+                    }                                  
+                    //Debug.WriteLine("Guardian: Plink is alive!");
 
                 } while (this.process.Responding);
                 Debug.WriteLine("Guardian: Plink stopped responding!");
@@ -232,7 +225,26 @@ namespace JoeriBekker.PuttyTunnelManager
             finally
             {
                 if (!this.process.HasExited)
+                {
                     Stop();
+                }
+                if(restart)
+                {
+                    MessageForm messageForm = new MessageForm(this.session.Name);
+                    messageForm.SetStatus("terminated");
+                    messageForm.Show();
+
+                    Thread runner = new Thread(() => {
+                        messageForm.SetStatus("reconnecting...");
+                        Debug.WriteLine("restarting plink process...");
+                        this.Start(true, true);
+                        messageForm.SetStatus("done!");
+                        messageForm.Hide();
+                    });
+                    runner.IsBackground = true;
+                    runner.Priority = ThreadPriority.Lowest;
+                    runner.Start();                  
+                }
             }
             Debug.WriteLine("Guardian: Stopped!");
         }

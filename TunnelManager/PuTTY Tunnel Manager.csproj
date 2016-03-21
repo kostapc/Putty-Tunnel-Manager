@@ -102,8 +102,7 @@
       <DependentUpon>MessageForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FormUtils.cs" />
-    <Compile Include="PlinkNotFoundException.cs" />
-    <Compile Include="PortAlreadyInUseException.cs" />
+    <Compile Include="PTMExceptions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

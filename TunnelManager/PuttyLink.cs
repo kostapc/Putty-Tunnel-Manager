@@ -34,7 +34,6 @@ namespace JoeriBekker.PuttyTunnelManager
     {
         private Session session;
         private Process process;
-        private Thread guardian;
         private bool active;
 
         public PuttyLink(Session session)
@@ -46,12 +45,18 @@ namespace JoeriBekker.PuttyTunnelManager
             this.process.StartInfo.CreateNoWindow = true;
             this.process.StartInfo.UseShellExecute = false;
 
-            this.guardian = new Thread(Guardian);
-            this.guardian.IsBackground = true;
-            this.guardian.Priority = ThreadPriority.Lowest;
+            
 
             this.active = false;
 
+        }
+
+        private Thread createGuardian()
+        {
+            Thread guardian = new Thread(Guardian);
+            guardian.IsBackground = true;
+            guardian.Priority = ThreadPriority.Lowest;
+            return guardian;
         }
 
         public Session Session
@@ -66,10 +71,10 @@ namespace JoeriBekker.PuttyTunnelManager
 
         public void Start()
         {
-            this.Start(true, false);
+            this.Start(true);
         }
 
-        public void Start(bool interactive, bool restart)
+        public void Start(bool interactive)
         {
             if (!PuttyTunnelManagerSettings.Instance().HasPlink)
             {
@@ -77,11 +82,8 @@ namespace JoeriBekker.PuttyTunnelManager
             }
 
             this.active = true;
-            if(!restart)
-            {
-                Session.OpenSessions.Add(this.session);          
-                this.guardian.Start();
-            }
+
+            Session.OpenSessions.Add(this.session);            
 
             if (interactive)
             {
@@ -111,6 +113,7 @@ namespace JoeriBekker.PuttyTunnelManager
 
             this.process.StartInfo.Arguments = args.ToString();
             this.process.Start();
+            createGuardian().Start();
             Debug.WriteLine("Plink: Started!");
 
             if (interactive)
@@ -173,14 +176,15 @@ namespace JoeriBekker.PuttyTunnelManager
                     this.process.StandardOutput.DiscardBufferedData();
                     buffer.Remove(0, buffer.Length);
                 }
+                Debug.WriteLine("Interactive session closed: process finished");
             }
             else
             {
                 this.process.WaitForExit();
+                Debug.WriteLine("non-Interactive session closed: process finished");
             }
 
             Debug.WriteLine("Plink: Stopped!");
-
             Session.OpenSessions.Remove(this.session);
             this.active = false;
         }
@@ -228,16 +232,15 @@ namespace JoeriBekker.PuttyTunnelManager
                 {
                     Stop();
                 }
+                Debug.WriteLine("Guardian: plink died. restart = "+restart);
                 if(restart)
-                {
-                    MessageForm messageForm = new MessageForm(this.session.Name);
-                    messageForm.SetStatus("terminated");
-                    messageForm.Show();
-
+                {                                   
                     Thread runner = new Thread(() => {
-                        messageForm.SetStatus("reconnecting...");
+                        MessageForm messageForm = new MessageForm(this.session.Name);
+                        messageForm.SetStatus("terminated! Reconnecting...");
+                        messageForm.Show();
                         Debug.WriteLine("restarting plink process...");
-                        this.Start(true, true);
+                        this.Start(true);
                         messageForm.SetStatus("done!");
                         messageForm.Hide();
                     });
@@ -249,4 +252,5 @@ namespace JoeriBekker.PuttyTunnelManager
             Debug.WriteLine("Guardian: Stopped!");
         }
     }
+       
 }

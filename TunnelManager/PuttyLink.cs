@@ -35,6 +35,9 @@ namespace JoeriBekker.PuttyTunnelManager
         private Session session;
         private Process process;
         private bool active;
+        private bool restart = true;
+
+        //MessageForm messageForm;
 
         public PuttyLink(Session session)
         {
@@ -43,12 +46,10 @@ namespace JoeriBekker.PuttyTunnelManager
             this.process = new Process();
             this.process.StartInfo.FileName = PuttyTunnelManagerSettings.Instance().PlinkLocation;
             this.process.StartInfo.CreateNoWindow = true;
-            this.process.StartInfo.UseShellExecute = false;
-
-            
+            this.process.StartInfo.UseShellExecute = false;            
 
             this.active = false;
-
+            //messageForm = new MessageForm(this.session.Name);
         }
 
         private Thread createGuardian()
@@ -80,7 +81,7 @@ namespace JoeriBekker.PuttyTunnelManager
             {
                 throw new PlinkNotFoundException();
             }
-
+            restart = true;
             this.active = true;
 
             Session.OpenSessions.Add(this.session);            
@@ -191,21 +192,15 @@ namespace JoeriBekker.PuttyTunnelManager
 
         public void Stop()
         {
+            restart = false;
             Debug.WriteLine("Plink: Terminating!");
-            try
-            {
-                this.process.Kill();
-                Debug.WriteLine("Plink: Killed!");
-            }
-            catch (Exception e)  {
-                Debug.WriteLine(e);
-            }
+            closeProccess();
         }
 
         private void Guardian()
         {
             Debug.WriteLine("Plink: Starting Guardian!");
-            var restart = true;
+            
             try
             {
                 do
@@ -230,26 +225,53 @@ namespace JoeriBekker.PuttyTunnelManager
             {
                 if (!this.process.HasExited)
                 {
-                    Stop();
+                    closeProccess();
                 }
                 Debug.WriteLine("Guardian: plink died. restart = "+restart);
                 if(restart)
-                {                                   
-                    Thread runner = new Thread(() => {
-                        MessageForm messageForm = new MessageForm(this.session.Name);
-                        messageForm.SetStatus("terminated! Reconnecting...");
-                        messageForm.Show();
-                        Debug.WriteLine("restarting plink process...");
-                        this.Start(true);
-                        messageForm.SetStatus("done!");
-                        messageForm.Hide();
-                    });
-                    runner.IsBackground = true;
-                    runner.Priority = ThreadPriority.Lowest;
-                    runner.Start();                  
+                {
+                    // TODO: show and hide form in separate thread...
+                    // maybe send some event?
+                    // i dont understand clear multithreading in WinForms UI
+
+                    //messageForm.SetStatus("terminated! Reconnecting...");
+                    //messageForm.Show();
+
+                    AsyncRestartPlink();
+
+                    //messageForm.SetStatus("done!");
+                    //messageForm.Close();
+
                 }
             }
             Debug.WriteLine("Guardian: Stopped!");
+        }
+
+        private void AsyncRestartPlink()
+        {
+            
+            Thread runner = new Thread(() => {
+                Debug.WriteLine("restarting plink process...");
+                this.Start(true);
+                Thread.Sleep(80);
+            });
+            runner.IsBackground = true;
+            runner.Priority = ThreadPriority.Lowest;
+            runner.Start();            
+            runner.Join();            
+        }
+
+        private void closeProccess()
+        {
+            try
+            {
+                this.process.Kill();
+                Debug.WriteLine("Plink: Killed!");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
     }
        

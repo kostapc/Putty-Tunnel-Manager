@@ -17,6 +17,7 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
         {
             this.sessionName = sessionName;            
             InitializeComponent();
+            updateLocation();
             this.labelSession.Text = sessionName;
         }
 

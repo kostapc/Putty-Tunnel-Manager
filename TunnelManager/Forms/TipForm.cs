@@ -35,9 +35,12 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
         {
             InitializeComponent();
 
+            updateLocation();
+            /*
             this.Location = new Point(
                 Screen.PrimaryScreen.WorkingArea.Right - this.Width,
                 Screen.PrimaryScreen.WorkingArea.Bottom - this.Height);
+            */
         }
 
         private void TipForm_Shown(object sender, EventArgs e)
@@ -118,9 +121,13 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
             this.Size = new Size(maxWidth + 12, y + 12);
 
+            updateLocation();
+            /*
             this.Location = new Point(
                 Screen.PrimaryScreen.WorkingArea.Right - this.Width,
                 Screen.PrimaryScreen.WorkingArea.Bottom - this.Height);
+            */
+                
 
             this.ResumeLayout(false);
             this.PerformLayout();

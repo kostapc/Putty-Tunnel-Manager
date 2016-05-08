@@ -49,6 +49,14 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
             this.tipForm = new TipForm();
             this.aboutForm = new AboutForm();
+            MessageForm messageForm = new MessageForm();
+            UserNotifications.init(
+                messageForm
+            );
+            UserNotifications.getNotificator().Notify(
+                "PTM", "starting..."
+            );
+            
         }
 
         public void UpdateSessions()

@@ -37,8 +37,6 @@ namespace JoeriBekker.PuttyTunnelManager
         private bool active;
         private bool restart = true;
 
-        //MessageForm messageForm;
-
         public PuttyLink(Session session)
         {
             this.session = session;
@@ -49,7 +47,6 @@ namespace JoeriBekker.PuttyTunnelManager
             this.process.StartInfo.UseShellExecute = false;            
 
             this.active = false;
-            //messageForm = new MessageForm(this.session.Name);
         }
 
         private Thread createGuardian()
@@ -234,13 +231,12 @@ namespace JoeriBekker.PuttyTunnelManager
                     // maybe send some event?
                     // i dont understand clear multithreading in WinForms UI
 
-                    //messageForm.SetStatus("terminated! Reconnecting...");
-                    //messageForm.Show();
+                    UserNotificator notificator = UserNotifications.getNotificator();
+                    notificator.Notify(this.session.Name, "terminated! Reconnecting...");
 
                     AsyncRestartPlink();
 
-                    //messageForm.SetStatus("done!");
-                    //messageForm.Close();
+                    notificator.Notify(this.session.Name, "Done!");
 
                 }
             }

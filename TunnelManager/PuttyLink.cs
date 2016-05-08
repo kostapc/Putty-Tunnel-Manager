@@ -227,9 +227,8 @@ namespace JoeriBekker.PuttyTunnelManager
                 Debug.WriteLine("Guardian: plink died. restart = "+restart);
                 if(restart)
                 {
-                    // TODO: show and hide form in separate thread...
-                    // maybe send some event?
-                    // i dont understand clear multithreading in WinForms UI
+                    // restart process and Guardian
+                    // show notification near system tray
 
                     UserNotifications.Notify(this.session.Name, "terminated! Reconnecting...");
 

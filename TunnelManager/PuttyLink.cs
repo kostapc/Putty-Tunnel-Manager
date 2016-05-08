@@ -229,7 +229,7 @@ namespace JoeriBekker.PuttyTunnelManager
                 {
                     // restart process and Guardian
                     // show notification near system tray
-                    // issue #22
+                    // issue #18
 
                     UserNotifications.Notify(this.session.Name, "terminated! Reconnecting...");
 

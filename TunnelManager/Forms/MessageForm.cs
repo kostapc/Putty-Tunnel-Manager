@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -14,11 +8,18 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
     {
 
         private Thread hideWithPause = null;
+        private Thread formThread = null;
 
         public MessageForm()
         {        
             InitializeComponent();
             updateLocation();
+            formThread = new Thread(formThreadRun);
+        }
+
+        private void formThreadRun()
+        {
+            Application.Run(this);
         }
 
         public void Notify(String title, String message)
@@ -27,7 +28,7 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             
             if (hideWithPause == null)
             {
-                
+                Show();
                 hideWithPause = new Thread(() =>
                 {
                     Thread.Sleep(500);
@@ -37,13 +38,15 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                 hideWithPause.IsBackground = true;
                 hideWithPause.Priority = ThreadPriority.Lowest;
                 hideWithPause.Start();
-                Show();
             }
         }
 
+        // InvokeRequired required compares the thread ID of the
+        // calling thread to the thread ID of the creating thread.
+        // If these threads are different, it returns true.
         delegate void SetTextCallback(String title, String text);
         delegate void FormHideCallback();
-        delegate DialogResult FormShowCallback();
+        delegate void FormShowCallback();
 
         
         public new void Hide()
@@ -60,12 +63,12 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
         {
             if (this.InvokeRequired)
             {
-                FormShowCallback d = new FormShowCallback(base.ShowDialog);
+                FormShowCallback d = new FormShowCallback(base.Show);
                 this.Invoke(d);
             }
             else
             {
-                base.ShowDialog();
+                base.Show();
             }
         }
 
@@ -73,20 +76,17 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
         {
             if (this.InvokeRequired)
             {
-                FormHideCallback d = new FormHideCallback(base.Close);
+                FormHideCallback d = new FormHideCallback(base.Hide);
                 this.Invoke(d);
             }
             else
             {
-                base.Close();
+                base.Hide();
             }
         }
 
         public void SetStatus(String title, String status)
         {
-            // InvokeRequired required compares the thread ID of the
-            // calling thread to the thread ID of the creating thread.
-            // If these threads are different, it returns true.
             if (this.labelStatus.InvokeRequired)
             {
                 SetTextCallback d = new SetTextCallback(SetStatus);
@@ -96,6 +96,13 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             {
                 this.labelSession.Text = title;
                 this.labelStatus.Text = status;
+                int w = labelSession.Width;
+                if(w<labelStatus.Width)
+                {
+                    w = labelStatus.Width;
+                }
+                this.Width = w;
+                updateLocation();
             }
         }
 

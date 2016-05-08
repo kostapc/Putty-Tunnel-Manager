@@ -53,7 +53,7 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             UserNotifications.init(
                 messageForm
             );
-            UserNotifications.getNotificator().Notify(
+            UserNotifications.Notify(
                 "PTM", "starting..."
             );
             

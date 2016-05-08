@@ -10,9 +10,9 @@ namespace JoeriBekker.PuttyTunnelManager
 
         private static UserNotificator userNotificator;
 
-        public static UserNotificator getNotificator()
+        public static void Notify(String title, String message)
         {
-            return userNotificator;
+            userNotificator.Notify(title, message);
         }
 
         public static void init(UserNotificator notificator)

@@ -231,12 +231,11 @@ namespace JoeriBekker.PuttyTunnelManager
                     // maybe send some event?
                     // i dont understand clear multithreading in WinForms UI
 
-                    UserNotificator notificator = UserNotifications.getNotificator();
-                    notificator.Notify(this.session.Name, "terminated! Reconnecting...");
+                    UserNotifications.Notify(this.session.Name, "terminated! Reconnecting...");
 
                     AsyncRestartPlink();
 
-                    notificator.Notify(this.session.Name, "Done!");
+                    UserNotifications.Notify(this.session.Name, "Done!");
 
                 }
             }

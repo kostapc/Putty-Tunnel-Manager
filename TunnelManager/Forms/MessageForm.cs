@@ -15,6 +15,7 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             InitializeComponent();
             updateLocation();
             formThread = new Thread(formThreadRun);
+            formThread.Start();
         }
 
         private void formThreadRun()
@@ -25,20 +26,13 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
         public void Notify(String title, String message)
         {
             SetStatus(title, message);
-            
-            if (hideWithPause == null)
+            Show();
+            SingleRunTimer hideTimer = new SingleRunTimer(() =>
             {
-                Show();
-                hideWithPause = new Thread(() =>
-                {
-                    Thread.Sleep(500);
-                    Hide();
-                    hideWithPause = null;
-                });
-                hideWithPause.IsBackground = true;
-                hideWithPause.Priority = ThreadPriority.Lowest;
-                hideWithPause.Start();
-            }
+                Hide();
+                hideWithPause = null;
+            });
+            hideTimer.StartTimer(1500);
         }
 
         // InvokeRequired required compares the thread ID of the
@@ -99,11 +93,16 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                 int w = labelSession.Width;
                 if(w<labelStatus.Width)
                 {
-                    w = labelStatus.Width;
+                    w = labelStatus.Width+25;
                 }
                 this.Width = w;
                 updateLocation();
             }
+        }
+
+        public void stop()
+        {
+            Application.Exit();
         }
 
     }

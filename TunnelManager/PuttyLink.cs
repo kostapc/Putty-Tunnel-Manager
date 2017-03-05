@@ -26,7 +26,6 @@ using System.Threading;
 using System.Windows.Forms;
 
 using JoeriBekker.PuttyTunnelManager.Forms;
-using System.Collections.Generic;
 
 namespace JoeriBekker.PuttyTunnelManager
 {
@@ -133,6 +132,7 @@ namespace JoeriBekker.PuttyTunnelManager
                     if(plinkstart && data.Length==0)
                     {
                         // TODO: automatic accept new cert at first connection
+                        // trying to pass and see if process exists.
                         throw new CurruptedSessionException();
                     }
 
@@ -235,7 +235,7 @@ namespace JoeriBekker.PuttyTunnelManager
 
                     AsyncRestartPlink();
 
-                    UserNotifications.Notify(this.session.Name, "Done!");
+                    UserNotifications.Notify(this.session.Name, "terminated! Reconnecting... Done!");
 
                 }
             }

@@ -1,12 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
 
 namespace JoeriBekker.PuttyTunnelManager
 {
+
+    public class SingleRunTimer
+    {
+        private Action payload;
+
+        public SingleRunTimer(Action callback)
+        {
+            this.payload = callback;
+        }
+
+        public void StartTimer(int dueTime)
+        {
+            var t = new System.Threading.Timer(new System.Threading.TimerCallback(TimerProc));
+            t.Change(dueTime, 0);
+        }
+
+        private void TimerProc(object state)
+        {
+            payload.DynamicInvoke();
+            var t = (System.Threading.Timer)state;
+            t.Dispose();            
+        }
+    }
+
     class FormUtils
     {
         internal static int ValidatePortTextBox(object sender, CancelEventArgs e)
@@ -95,7 +117,7 @@ namespace JoeriBekker.PuttyTunnelManager
             {
                 case Location.Left:
                     point.X = rectangle.Width + 1;
-                    point.Y = rectangle.Height - rect.Height - 1;
+                    point.Y = rectangle.Height - rect.Height - 1 - 10;
                     break;
                 case Location.Bottom:
                     point.X = rectangle.Width - rect.Width - 1;
@@ -107,7 +129,7 @@ namespace JoeriBekker.PuttyTunnelManager
                     break;
                 case Location.Right:
                     point.X = rectangle.X - rect.Width - 1;
-                    point.Y = rectangle.Height - rect.Height - 1;
+                    point.Y = rectangle.Height - rect.Height - 1 - 10;
                     break;
             }
 

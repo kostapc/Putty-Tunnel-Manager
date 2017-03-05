@@ -36,7 +36,7 @@
             // 
             this.labelSession.AutoSize = true;
             this.labelSession.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelSession.Location = new System.Drawing.Point(13, 1);
+            this.labelSession.Location = new System.Drawing.Point(12, 8);
             this.labelSession.Name = "labelSession";
             this.labelSession.Size = new System.Drawing.Size(49, 13);
             this.labelSession.TabIndex = 0;
@@ -45,7 +45,7 @@
             // labelStatus
             // 
             this.labelStatus.AutoSize = true;
-            this.labelStatus.Location = new System.Drawing.Point(13, 18);
+            this.labelStatus.Location = new System.Drawing.Point(12, 26);
             this.labelStatus.Name = "labelStatus";
             this.labelStatus.Size = new System.Drawing.Size(35, 13);
             this.labelStatus.TabIndex = 1;
@@ -57,7 +57,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(98, 36);
+            this.ClientSize = new System.Drawing.Size(127, 48);
             this.ControlBox = false;
             this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.labelSession);
@@ -73,6 +73,7 @@
             this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

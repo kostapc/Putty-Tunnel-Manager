@@ -59,6 +59,11 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             int y = 0;
             int maxWidth = 0;
 
+            if(Session.OpenSessions==null)
+            {
+                Core.Instance().Refresh();
+            }
+
             foreach (Session session in Session.OpenSessions)
             {
                 y += 12;

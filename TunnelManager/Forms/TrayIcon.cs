@@ -46,10 +46,9 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
             this.tipForm = new TipForm();
             this.aboutForm = new AboutForm();
-<<<<<<< HEAD:Forms/TrayIcon.cs
 
             UpdateSessions(true);
-=======
+
             MessageForm messageForm = new MessageForm();
             UserNotifications.init(
                 messageForm
@@ -58,7 +57,6 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                 "PTM", "starting..."
             );
             
->>>>>>> master:TunnelManager/Forms/TrayIcon.cs
         }
 
         public void UpdateSessions(bool first)

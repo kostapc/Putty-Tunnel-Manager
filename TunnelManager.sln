@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26206.0
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuTTY Tunnel Manager", "TunnelManager\PuTTY Tunnel Manager.csproj", "{45EC6417-C87F-46FD-9E53-CC520B10B9CD}"
 EndProject

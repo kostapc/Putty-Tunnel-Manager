@@ -20,24 +20,23 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace JoeriBekker.PuttyTunnelManager.Forms
 {
-    public partial class TipForm : Form
+    public partial class TipForm : InfoForm
     {
         public TipForm()
         {
             InitializeComponent();
 
+            updateLocation();
+            /*
             this.Location = new Point(
                 Screen.PrimaryScreen.WorkingArea.Right - this.Width,
                 Screen.PrimaryScreen.WorkingArea.Bottom - this.Height);
+            */
         }
 
         private void TipForm_Shown(object sender, EventArgs e)
@@ -59,6 +58,11 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
             int y = 0;
             int maxWidth = 0;
+
+            if(Session.OpenSessions==null)
+            {
+                Core.Instance().Refresh();
+            }
 
             foreach (Session session in Session.OpenSessions)
             {
@@ -118,9 +122,13 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
             this.Size = new Size(maxWidth + 12, y + 12);
 
+            updateLocation();
+            /*
             this.Location = new Point(
                 Screen.PrimaryScreen.WorkingArea.Right - this.Width,
                 Screen.PrimaryScreen.WorkingArea.Bottom - this.Height);
+            */
+                
 
             this.ResumeLayout(false);
             this.PerformLayout();

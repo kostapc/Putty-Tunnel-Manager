@@ -26,4 +26,28 @@ namespace JoeriBekker.PuttyTunnelManager
     class PlinkNotFoundException : Exception
     {
     }
+
+    class PortAlreadyInUseException : Exception
+    {
+        private Tunnel tunnel;
+
+        public PortAlreadyInUseException(Tunnel tunnel)
+        {
+            this.tunnel = tunnel;
+        }
+
+        public Tunnel Tunnel
+        {
+            get
+            {
+                return this.tunnel;
+            }
+        }
+    }
+
+    class CurruptedSessionException : Exception
+    {
+
+    }
+
 }

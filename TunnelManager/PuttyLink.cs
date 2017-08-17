@@ -33,8 +33,8 @@ namespace JoeriBekker.PuttyTunnelManager
     {
         private Session session;
         private Process process;
-        private Thread guardian;
         private bool active;
+        private bool restart = true;
 
         public PuttyLink(Session session)
         {
@@ -43,13 +43,17 @@ namespace JoeriBekker.PuttyTunnelManager
             this.process = new Process();
             this.process.StartInfo.FileName = PuttyTunnelManagerSettings.Instance().PlinkLocation;
             this.process.StartInfo.CreateNoWindow = true;
-            this.process.StartInfo.UseShellExecute = false;
-
-            this.guardian = new Thread(Guardian);
-            this.guardian.IsBackground = true;
-            this.guardian.Priority = ThreadPriority.Lowest;
+            this.process.StartInfo.UseShellExecute = false;            
 
             this.active = false;
+        }
+
+        private Thread createGuardian()
+        {
+            Thread guardian = new Thread(Guardian);
+            guardian.IsBackground = true;
+            guardian.Priority = ThreadPriority.Lowest;
+            return guardian;
         }
 
         public Session Session
@@ -73,12 +77,10 @@ namespace JoeriBekker.PuttyTunnelManager
             {
                 throw new PlinkNotFoundException();
             }
-
+            restart = true;
             this.active = true;
-            Session.OpenSessions.Add(this.session);
 
-            this.guardian.Start();
-            Debug.WriteLine("Plink: Starting Guardian!");
+            Session.OpenSessions.Add(this.session);            
 
             if (interactive)
             {
@@ -108,12 +110,13 @@ namespace JoeriBekker.PuttyTunnelManager
 
             this.process.StartInfo.Arguments = args.ToString();
             this.process.Start();
+            createGuardian().Start();
             Debug.WriteLine("Plink: Started!");
 
             if (interactive)
             {
                 this.process.StandardInput.AutoFlush = true;
-
+                var plinkstart = true;
                 StringBuilder buffer = new StringBuilder();
                 string username = this.session.Username;
                 while (!this.process.HasExited)
@@ -125,6 +128,13 @@ namespace JoeriBekker.PuttyTunnelManager
                     }
 
                     string data = buffer.ToString().ToLower();
+
+                    if(plinkstart && data.Length==0)
+                    {
+                        // TODO: automatic accept new cert at first connection
+                        // trying to pass and see if process exists.
+                        throw new CurruptedSessionException();
+                    }
 
                     if (data.Contains("login"))
                     {
@@ -140,66 +150,124 @@ namespace JoeriBekker.PuttyTunnelManager
                             this.process.StandardInput.WriteLine(username);
                         }
                         else
+                        {
                             Stop();
+                        }
                     }
                     else if (data.Contains("password"))
                     {
-                        LoginForm form = new LoginForm(username);
-                        if (form.ShowDialog() == DialogResult.OK)
-                            this.process.StandardInput.WriteLine(form.Password);
-                        else
+                        if(session.Password==null)
+                        {
+                            LoginForm form = new LoginForm(username);
+                            if (form.ShowDialog() == DialogResult.OK)
+                            {
+                                session.Password = form.Password;                                
+                            }
+                        }
+                        if(session.Password==null)
+                        {
                             Stop();
+                        }
+                        this.process.StandardInput.WriteLine(session.Password);
+                        plinkstart = false;                    
                     }
                     this.process.StandardOutput.DiscardBufferedData();
                     buffer.Remove(0, buffer.Length);
                 }
+                Debug.WriteLine("Interactive session closed: process finished");
             }
             else
             {
                 this.process.WaitForExit();
+                Debug.WriteLine("non-Interactive session closed: process finished");
             }
 
             Debug.WriteLine("Plink: Stopped!");
-
             Session.OpenSessions.Remove(this.session);
             this.active = false;
         }
 
         public void Stop()
         {
+            restart = false;
             Debug.WriteLine("Plink: Terminating!");
+            closeProccess();
+        }
+
+        private void Guardian()
+        {
+            Debug.WriteLine("Plink: Starting Guardian!");
+            
+            try
+            {
+                do
+                {
+                    Thread.Sleep(500);
+                    if (this.process.HasExited)
+                    {
+                        Debug.WriteLine("Guardian: Stopped due to Plink termination!");
+                        return;                                                                   
+                    }                                  
+                    //Debug.WriteLine("Guardian: Plink is alive!");
+
+                } while (this.process.Responding);
+                Debug.WriteLine("Guardian: Plink stopped responding!");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Guardian: Exception! "+e.Message);
+                Debug.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                if (!this.process.HasExited)
+                {
+                    closeProccess();
+                }
+                Debug.WriteLine("Guardian: plink died. restart = "+restart);
+                if(restart)
+                {
+                    // restart process and Guardian
+                    // show notification near system tray
+                    // issue #18
+
+                    UserNotifications.Notify(this.session.Name, "terminated! Reconnecting...");
+
+                    AsyncRestartPlink();
+
+                    UserNotifications.Notify(this.session.Name, "terminated! Reconnecting... Done!");
+
+                }
+            }
+            Debug.WriteLine("Guardian: Stopped!");
+        }
+
+        private void AsyncRestartPlink()
+        {
+            
+            Thread runner = new Thread(() => {
+                Debug.WriteLine("restarting plink process...");
+                this.Start(true);
+                Thread.Sleep(80);
+            });
+            runner.IsBackground = true;
+            runner.Priority = ThreadPriority.Lowest;
+            runner.Start();            
+            runner.Join();            
+        }
+
+        private void closeProccess()
+        {
             try
             {
                 this.process.Kill();
                 Debug.WriteLine("Plink: Killed!");
             }
-            catch (Exception) { }
-        }
-
-        private void Guardian()
-        {
-            try
+            catch (Exception e)
             {
-                do
-                {
-                    Thread.Sleep(1000);
-                    if (this.process.HasExited)
-                    {
-                        Debug.WriteLine("Guardian: Stopped due to Plink termination!");
-                        return;
-                    }
-                    Debug.WriteLine("Guardian: Plink is alive!");
-
-                } while (this.process.Responding);
-                Debug.WriteLine("Guardian: Plink stopped responding!");
+                Debug.WriteLine(e);
             }
-            catch (Exception) { }
-            finally
-            {
-                if (!this.process.HasExited)
-                    Stop();
-            }
-            Debug.WriteLine("Guardian: Stopped!");
         }
     }
+       
 }

@@ -22,9 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace JoeriBekker.PuttyTunnelManager.Forms
@@ -49,8 +46,19 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
             this.tipForm = new TipForm();
             this.aboutForm = new AboutForm();
+<<<<<<< HEAD:Forms/TrayIcon.cs
 
             UpdateSessions(true);
+=======
+            MessageForm messageForm = new MessageForm();
+            UserNotifications.init(
+                messageForm
+            );
+            UserNotifications.Notify(
+                "PTM", "starting..."
+            );
+            
+>>>>>>> master:TunnelManager/Forms/TrayIcon.cs
         }
 
         public void UpdateSessions(bool first)

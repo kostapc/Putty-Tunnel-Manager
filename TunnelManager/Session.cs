@@ -37,6 +37,11 @@ namespace JoeriBekker.PuttyTunnelManager
         public static string PUTTY_REGISTRY_KEY_SESSION_PORTNUMBER          = "PortNumber";
         public static string PUTTY_REGISTRY_KEY_SESSION_COMPRESSION         = "Compression";
         public static string PUTTY_REGISTRY_KEY_SESSION_LOCALPORTACCEPTALL  = "LocalPortAcceptAll";
+        public static string PUTTY_REGISTRY_KEY_SESSION_ADDRESS_FAMILY = "AddressFamily";
+        public static string PUTTY_REGISTRY_KEY_SESSION_CUR_TYPE = "CurType";
+        public static string PUTTY_REGISTRY_KEY_SESSION_ENVIRONMENT = "Environment";
+        public static string PUTTY_REGISTRY_KEY_SESSION_PRESENT = "Present";
+        public static string PUTTY_REGISTRY_KEY_SESSION_PROTOCOL = "Protocol";
 
         public static string PTM_REGISTRY_KEY_SESSION_PORTFORWARDINGS       = "PortForwardings";
         public static string PTM_REGISTRY_KEY_SESSION_USEPTMFORTUNNELS      = "UsePtmForTunnels";
@@ -45,6 +50,7 @@ namespace JoeriBekker.PuttyTunnelManager
         private string name;
         private string hostname;
         private string username;
+        private string password = null;
         private int port;
         private bool compression;
         private bool localPortsAcceptAll;
@@ -116,6 +122,12 @@ namespace JoeriBekker.PuttyTunnelManager
         {
             get { return this.username; }
             set { this.username = value; }
+        }
+
+        public string Password
+        {
+            get { return this.password; }
+            set { this.password = value; }
         }
 
         public int Port
@@ -206,6 +218,12 @@ namespace JoeriBekker.PuttyTunnelManager
             puttySessionKey.SetValue(PUTTY_REGISTRY_KEY_SESSION_USERNAME, this.username, RegistryValueKind.String);
             puttySessionKey.SetValue(PUTTY_REGISTRY_KEY_SESSION_COMPRESSION, this.compression, RegistryValueKind.DWord);
             puttySessionKey.SetValue(PUTTY_REGISTRY_KEY_SESSION_LOCALPORTACCEPTALL, this.localPortsAcceptAll, RegistryValueKind.DWord);
+
+            puttySessionKey.SetValue(PUTTY_REGISTRY_KEY_SESSION_ADDRESS_FAMILY, 0, RegistryValueKind.DWord);
+            puttySessionKey.SetValue(PUTTY_REGISTRY_KEY_SESSION_CUR_TYPE, 0, RegistryValueKind.DWord);
+            puttySessionKey.SetValue(PUTTY_REGISTRY_KEY_SESSION_ENVIRONMENT, string.Empty, RegistryValueKind.String);
+            puttySessionKey.SetValue(PUTTY_REGISTRY_KEY_SESSION_PRESENT, 1, RegistryValueKind.DWord);
+            puttySessionKey.SetValue(PUTTY_REGISTRY_KEY_SESSION_PROTOCOL, "ssh", RegistryValueKind.String);
 
             StringBuilder buffer = new StringBuilder();
             foreach (Tunnel tunnel in this.Tunnels)

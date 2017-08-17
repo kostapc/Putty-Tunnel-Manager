@@ -1,8 +1,19 @@
+<<<<<<< HEAD
 # putty-tunnel-manager
 PuTTY Tunnel Manager allows you to easily open tunnels, that are defined in a PuTTY session, from the system tray. You can also move the tunnels from PuTTY to PuTTY Tunnel Manager. This allows you to use PuTTY just for SSH shell sessions (without opening tunnels), and use PuTTY Tunnel Manager just for tunneling. 
 
 
 ## Features
+=======
+# Putty Tunnel Manager
+putty-tunnel-manager with that fixes :)
+
+Easily open tunnels, from any PuTTY session, from your system tray.
+
+PuTTY Tunnel Manager allows you to easily open tunnels, that are defined in a PuTTY session, from the system tray. You can also move the tunnels from PuTTY to PuTTY Tunnel Manager. This allows you to use PuTTY just for SSH shell sessions (without opening tunnels), and use PuTTY Tunnel Manager just for tunneling.
+
+# Features
+>>>>>>> master
 
 * Created specifically for tunneling over SSH sessions
 * Open and close sessions from the system tray
@@ -14,6 +25,7 @@ PuTTY Tunnel Manager allows you to easily open tunnels, that are defined in a Pu
 * Simple interface
 * One file, small size, with a cool icon
 
+<<<<<<< HEAD
 ## Screenshots
 
 ![](http://putty-tunnel-manager.googlecode.com/files/tunneloverview.png)
@@ -32,3 +44,7 @@ See the Quick guide to get started.
 
 I also recommend to use Pageant for public key authentication (read: no passwords and even more secure). See the [Using pageant](https://github.com/kthompson/putty-tunnel-manager/wiki/UsingPageant) section for a short explanation.
 
+=======
+# Source
+The original source code comes from https://code.google.com/archive/p/putty-tunnel-manager/
+>>>>>>> master

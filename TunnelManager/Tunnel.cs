@@ -92,7 +92,7 @@ namespace JoeriBekker.PuttyTunnelManager
             string destination = "";
             int destinationPort = 0;
 
-            if (parts.Length > 1)
+            if ((parts.Length > 1) && (parts[1].Trim().Length > 0)) // So what if the PortForwardings line is something like 'D8080='
             {
                 destination = parts[1];
                 

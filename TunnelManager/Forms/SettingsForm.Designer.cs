@@ -29,12 +29,13 @@
         private void InitializeComponent()
         {
             this.sessions = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
             this.sessionDetails = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.storeTunnelsSeparate = new System.Windows.Forms.CheckBox();
+            this.autoStartSession = new System.Windows.Forms.CheckBox();
             this.sessionName = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -47,24 +48,18 @@
             this.username = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.buttonAddLocalPort = new System.Windows.Forms.Button();
-            this.buttonDeleteLocalPort = new System.Windows.Forms.Button();
             this.localPorts = new System.Windows.Forms.ListView();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.buttonAddRemotePort = new System.Windows.Forms.Button();
-            this.buttonDeleteRemotePort = new System.Windows.Forms.Button();
             this.remotePorts = new System.Windows.Forms.ListView();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.buttonAddDynamicPort = new System.Windows.Forms.Button();
-            this.buttonDeleteDynamicPort = new System.Windows.Forms.Button();
             this.dynamicPorts = new System.Windows.Forms.ListView();
-            this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonDeleteSession = new System.Windows.Forms.Button();
             this.buttonAddSession = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -74,6 +69,12 @@
             this.plinkLocation = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.buttonAddLocalPort = new System.Windows.Forms.Button();
+            this.buttonDeleteLocalPort = new System.Windows.Forms.Button();
+            this.buttonAddRemotePort = new System.Windows.Forms.Button();
+            this.buttonDeleteRemotePort = new System.Windows.Forms.Button();
+            this.buttonAddDynamicPort = new System.Windows.Forms.Button();
+            this.buttonDeleteDynamicPort = new System.Windows.Forms.Button();
             this.sessionDetails.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -134,6 +135,7 @@
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.storeTunnelsSeparate);
+            this.tabPage1.Controls.Add(this.autoStartSession);
             this.tabPage1.Controls.Add(this.sessionName);
             this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -150,11 +152,23 @@
             this.storeTunnelsSeparate.AutoSize = true;
             this.storeTunnelsSeparate.Location = new System.Drawing.Point(9, 39);
             this.storeTunnelsSeparate.Name = "storeTunnelsSeparate";
-            this.storeTunnelsSeparate.Size = new System.Drawing.Size(224, 17);
+            this.storeTunnelsSeparate.Size = new System.Drawing.Size(238, 17);
             this.storeTunnelsSeparate.TabIndex = 1;
             this.storeTunnelsSeparate.Text = "Use PuTTY Tunnel Manager to store tunnels";
             this.storeTunnelsSeparate.UseVisualStyleBackColor = true;
+            this.storeTunnelsSeparate.CheckedChanged += new System.EventHandler(this.storeTunnelsSeparate_CheckedChanged);
             this.storeTunnelsSeparate.Click += new System.EventHandler(this.storeTunnelsSeparate_Click);
+            // 
+            // autoStartSession
+            // 
+            this.autoStartSession.AutoSize = true;
+            this.autoStartSession.Location = new System.Drawing.Point(9, 63);
+            this.autoStartSession.Name = "autoStartSession";
+            this.autoStartSession.Size = new System.Drawing.Size(178, 17);
+            this.autoStartSession.TabIndex = 1;
+            this.autoStartSession.Text = "Auto connect session on startup";
+            this.autoStartSession.UseVisualStyleBackColor = true;
+            this.autoStartSession.Click += new System.EventHandler(this.autoStartSession_Click);
             // 
             // sessionName
             // 
@@ -277,37 +291,11 @@
             this.tabPage3.Text = "Local ports";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // buttonAddLocalPort
-            // 
-            this.buttonAddLocalPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAddLocalPort.Enabled = false;
-            this.buttonAddLocalPort.Location = new System.Drawing.Point(218, 138);
-            this.buttonAddLocalPort.Name = "buttonAddLocalPort";
-            this.buttonAddLocalPort.Size = new System.Drawing.Size(75, 26);
-            this.buttonAddLocalPort.TabIndex = 1;
-            this.buttonAddLocalPort.Tag = JoeriBekker.PuttyTunnelManager.TunnelType.LOCAL;
-            this.buttonAddLocalPort.Text = "Add";
-            this.buttonAddLocalPort.UseVisualStyleBackColor = true;
-            this.buttonAddLocalPort.Click += new System.EventHandler(this.AddPortButtonHandler);
-            // 
-            // buttonDeleteLocalPort
-            // 
-            this.buttonDeleteLocalPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDeleteLocalPort.Enabled = false;
-            this.buttonDeleteLocalPort.Location = new System.Drawing.Point(299, 138);
-            this.buttonDeleteLocalPort.Name = "buttonDeleteLocalPort";
-            this.buttonDeleteLocalPort.Size = new System.Drawing.Size(75, 26);
-            this.buttonDeleteLocalPort.TabIndex = 2;
-            this.buttonDeleteLocalPort.Tag = JoeriBekker.PuttyTunnelManager.TunnelType.LOCAL;
-            this.buttonDeleteLocalPort.Text = "Delete";
-            this.buttonDeleteLocalPort.UseVisualStyleBackColor = true;
-            this.buttonDeleteLocalPort.Click += new System.EventHandler(this.DeletePortButtonHandler);
-            // 
             // localPorts
             // 
-            this.localPorts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.localPorts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.localPorts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader2,
             this.columnHeader3,
@@ -348,37 +336,11 @@
             this.tabPage4.Text = "Remote ports";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // buttonAddRemotePort
-            // 
-            this.buttonAddRemotePort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAddRemotePort.Enabled = false;
-            this.buttonAddRemotePort.Location = new System.Drawing.Point(218, 138);
-            this.buttonAddRemotePort.Name = "buttonAddRemotePort";
-            this.buttonAddRemotePort.Size = new System.Drawing.Size(75, 26);
-            this.buttonAddRemotePort.TabIndex = 1;
-            this.buttonAddRemotePort.Tag = JoeriBekker.PuttyTunnelManager.TunnelType.REMOTE;
-            this.buttonAddRemotePort.Text = "Add";
-            this.buttonAddRemotePort.UseVisualStyleBackColor = true;
-            this.buttonAddRemotePort.Click += new System.EventHandler(this.AddPortButtonHandler);
-            // 
-            // buttonDeleteRemotePort
-            // 
-            this.buttonDeleteRemotePort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDeleteRemotePort.Enabled = false;
-            this.buttonDeleteRemotePort.Location = new System.Drawing.Point(299, 138);
-            this.buttonDeleteRemotePort.Name = "buttonDeleteRemotePort";
-            this.buttonDeleteRemotePort.Size = new System.Drawing.Size(75, 26);
-            this.buttonDeleteRemotePort.TabIndex = 2;
-            this.buttonDeleteRemotePort.Tag = JoeriBekker.PuttyTunnelManager.TunnelType.REMOTE;
-            this.buttonDeleteRemotePort.Text = "Delete";
-            this.buttonDeleteRemotePort.UseVisualStyleBackColor = true;
-            this.buttonDeleteRemotePort.Click += new System.EventHandler(this.DeletePortButtonHandler);
-            // 
             // remotePorts
             // 
-            this.remotePorts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.remotePorts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.remotePorts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader5,
             this.columnHeader6,
@@ -419,37 +381,11 @@
             this.tabPage5.Text = "Dynamic ports";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // buttonAddDynamicPort
-            // 
-            this.buttonAddDynamicPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAddDynamicPort.Enabled = false;
-            this.buttonAddDynamicPort.Location = new System.Drawing.Point(218, 138);
-            this.buttonAddDynamicPort.Name = "buttonAddDynamicPort";
-            this.buttonAddDynamicPort.Size = new System.Drawing.Size(75, 26);
-            this.buttonAddDynamicPort.TabIndex = 1;
-            this.buttonAddDynamicPort.Tag = JoeriBekker.PuttyTunnelManager.TunnelType.DYNAMIC;
-            this.buttonAddDynamicPort.Text = "Add";
-            this.buttonAddDynamicPort.UseVisualStyleBackColor = true;
-            this.buttonAddDynamicPort.Click += new System.EventHandler(this.AddPortButtonHandler);
-            // 
-            // buttonDeleteDynamicPort
-            // 
-            this.buttonDeleteDynamicPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDeleteDynamicPort.Enabled = false;
-            this.buttonDeleteDynamicPort.Location = new System.Drawing.Point(299, 138);
-            this.buttonDeleteDynamicPort.Name = "buttonDeleteDynamicPort";
-            this.buttonDeleteDynamicPort.Size = new System.Drawing.Size(75, 26);
-            this.buttonDeleteDynamicPort.TabIndex = 2;
-            this.buttonDeleteDynamicPort.Tag = JoeriBekker.PuttyTunnelManager.TunnelType.DYNAMIC;
-            this.buttonDeleteDynamicPort.Text = "Delete";
-            this.buttonDeleteDynamicPort.UseVisualStyleBackColor = true;
-            this.buttonDeleteDynamicPort.Click += new System.EventHandler(this.DeletePortButtonHandler);
-            // 
             // dynamicPorts
             // 
-            this.dynamicPorts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dynamicPorts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dynamicPorts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader8});
             this.dynamicPorts.FullRowSelect = true;
@@ -556,6 +492,84 @@
             this.openFileDialog.Filter = "PuTTY link|plink.exe";
             this.openFileDialog.Title = "Location of plink.exe";
             // 
+            // buttonAddLocalPort
+            // 
+            this.buttonAddLocalPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAddLocalPort.Enabled = false;
+            this.buttonAddLocalPort.Location = new System.Drawing.Point(218, 138);
+            this.buttonAddLocalPort.Name = "buttonAddLocalPort";
+            this.buttonAddLocalPort.Size = new System.Drawing.Size(75, 26);
+            this.buttonAddLocalPort.TabIndex = 1;
+            this.buttonAddLocalPort.Tag = JoeriBekker.PuttyTunnelManager.TunnelType.LOCAL;
+            this.buttonAddLocalPort.Text = "Add";
+            this.buttonAddLocalPort.UseVisualStyleBackColor = true;
+            this.buttonAddLocalPort.Click += new System.EventHandler(this.AddPortButtonHandler);
+            // 
+            // buttonDeleteLocalPort
+            // 
+            this.buttonDeleteLocalPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDeleteLocalPort.Enabled = false;
+            this.buttonDeleteLocalPort.Location = new System.Drawing.Point(299, 138);
+            this.buttonDeleteLocalPort.Name = "buttonDeleteLocalPort";
+            this.buttonDeleteLocalPort.Size = new System.Drawing.Size(75, 26);
+            this.buttonDeleteLocalPort.TabIndex = 2;
+            this.buttonDeleteLocalPort.Tag = JoeriBekker.PuttyTunnelManager.TunnelType.LOCAL;
+            this.buttonDeleteLocalPort.Text = "Delete";
+            this.buttonDeleteLocalPort.UseVisualStyleBackColor = true;
+            this.buttonDeleteLocalPort.Click += new System.EventHandler(this.DeletePortButtonHandler);
+            // 
+            // buttonAddRemotePort
+            // 
+            this.buttonAddRemotePort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAddRemotePort.Enabled = false;
+            this.buttonAddRemotePort.Location = new System.Drawing.Point(218, 138);
+            this.buttonAddRemotePort.Name = "buttonAddRemotePort";
+            this.buttonAddRemotePort.Size = new System.Drawing.Size(75, 26);
+            this.buttonAddRemotePort.TabIndex = 1;
+            this.buttonAddRemotePort.Tag = JoeriBekker.PuttyTunnelManager.TunnelType.REMOTE;
+            this.buttonAddRemotePort.Text = "Add";
+            this.buttonAddRemotePort.UseVisualStyleBackColor = true;
+            this.buttonAddRemotePort.Click += new System.EventHandler(this.AddPortButtonHandler);
+            // 
+            // buttonDeleteRemotePort
+            // 
+            this.buttonDeleteRemotePort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDeleteRemotePort.Enabled = false;
+            this.buttonDeleteRemotePort.Location = new System.Drawing.Point(299, 138);
+            this.buttonDeleteRemotePort.Name = "buttonDeleteRemotePort";
+            this.buttonDeleteRemotePort.Size = new System.Drawing.Size(75, 26);
+            this.buttonDeleteRemotePort.TabIndex = 2;
+            this.buttonDeleteRemotePort.Tag = JoeriBekker.PuttyTunnelManager.TunnelType.REMOTE;
+            this.buttonDeleteRemotePort.Text = "Delete";
+            this.buttonDeleteRemotePort.UseVisualStyleBackColor = true;
+            this.buttonDeleteRemotePort.Click += new System.EventHandler(this.DeletePortButtonHandler);
+            // 
+            // buttonAddDynamicPort
+            // 
+            this.buttonAddDynamicPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAddDynamicPort.Enabled = false;
+            this.buttonAddDynamicPort.Location = new System.Drawing.Point(218, 138);
+            this.buttonAddDynamicPort.Name = "buttonAddDynamicPort";
+            this.buttonAddDynamicPort.Size = new System.Drawing.Size(75, 26);
+            this.buttonAddDynamicPort.TabIndex = 1;
+            this.buttonAddDynamicPort.Tag = JoeriBekker.PuttyTunnelManager.TunnelType.DYNAMIC;
+            this.buttonAddDynamicPort.Text = "Add";
+            this.buttonAddDynamicPort.UseVisualStyleBackColor = true;
+            this.buttonAddDynamicPort.Click += new System.EventHandler(this.AddPortButtonHandler);
+            // 
+            // buttonDeleteDynamicPort
+            // 
+            this.buttonDeleteDynamicPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDeleteDynamicPort.Enabled = false;
+            this.buttonDeleteDynamicPort.Location = new System.Drawing.Point(299, 138);
+            this.buttonDeleteDynamicPort.Name = "buttonDeleteDynamicPort";
+            this.buttonDeleteDynamicPort.Size = new System.Drawing.Size(75, 26);
+            this.buttonDeleteDynamicPort.TabIndex = 2;
+            this.buttonDeleteDynamicPort.Tag = JoeriBekker.PuttyTunnelManager.TunnelType.DYNAMIC;
+            this.buttonDeleteDynamicPort.Text = "Delete";
+            this.buttonDeleteDynamicPort.UseVisualStyleBackColor = true;
+            this.buttonDeleteDynamicPort.Click += new System.EventHandler(this.DeletePortButtonHandler);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -571,8 +585,8 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
-            this.Shown += new System.EventHandler(this.SettingsForm_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsForm_FormClosing);
+            this.Shown += new System.EventHandler(this.SettingsForm_Shown);
             this.sessionDetails.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -626,6 +640,7 @@
         private System.Windows.Forms.CheckBox localPortsAcceptAll;
         private System.Windows.Forms.CheckBox compression;
         private System.Windows.Forms.CheckBox storeTunnelsSeparate;
+        private System.Windows.Forms.CheckBox autoStartSession;
         private System.Windows.Forms.Button buttonAddRemotePort;
         private System.Windows.Forms.Button buttonDeleteRemotePort;
         private System.Windows.Forms.ListView remotePorts;

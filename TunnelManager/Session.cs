@@ -45,6 +45,7 @@ namespace JoeriBekker.PuttyTunnelManager
 
         public static string PTM_REGISTRY_KEY_SESSION_PORTFORWARDINGS       = "PortForwardings";
         public static string PTM_REGISTRY_KEY_SESSION_USEPTMFORTUNNELS      = "UsePtmForTunnels";
+        public static string PTM_REGISTRY_KEY_SESSION_AUTOSTART             = "AutoStart";
 
         private string name;
         private string hostname;
@@ -53,6 +54,7 @@ namespace JoeriBekker.PuttyTunnelManager
         private int port;
         private bool compression;
         private bool localPortsAcceptAll;
+        private bool autoStart;
         private List<Tunnel> tunnels;
 
         private bool usePtmForTunnels;
@@ -146,6 +148,12 @@ namespace JoeriBekker.PuttyTunnelManager
             set { this.localPortsAcceptAll = value; }
         }
 
+        public bool AutoStart
+        {
+            get { return this.autoStart; }
+            set { this.autoStart = value; }
+        }
+
         public bool UsePtmForTunnels
         {
             get { return this.usePtmForTunnels; }
@@ -229,6 +237,7 @@ namespace JoeriBekker.PuttyTunnelManager
                 RegistryKey ptmSessionKey = Registry.CurrentUser.CreateSubKey(this.PuttyTunnelManagerKeyPath);
                 ptmSessionKey.SetValue(PTM_REGISTRY_KEY_SESSION_PORTFORWARDINGS, buffer.ToString(), RegistryValueKind.String);
                 ptmSessionKey.SetValue(PTM_REGISTRY_KEY_SESSION_USEPTMFORTUNNELS, this.usePtmForTunnels, RegistryValueKind.DWord);
+                ptmSessionKey.SetValue(PTM_REGISTRY_KEY_SESSION_AUTOSTART, this.autoStart, RegistryValueKind.DWord);
                 ptmSessionKey.Close();
             }
             else
@@ -261,6 +270,7 @@ namespace JoeriBekker.PuttyTunnelManager
             if (ptmSessionKey != null)
             {
                 session.UsePtmForTunnels = ptmSessionKey.GetValue(PTM_REGISTRY_KEY_SESSION_USEPTMFORTUNNELS, 0).Equals(1);
+                session.AutoStart = ptmSessionKey.GetValue(PTM_REGISTRY_KEY_SESSION_AUTOSTART, 0).Equals(1);
             }
 
             string[] portForwardingList;

@@ -57,7 +57,13 @@ namespace JoeriBekker.PuttyTunnelManager
         {
             foreach (string sessionName in PuttySettings.Instance().Sessions)
             {
-                this.sessions.Add(Session.Load(sessionName));
+                Session session;
+                session = Session.Load(sessionName);
+                this.sessions.Add(session);
+                if (session.AutoStart && !session.IsOpen)
+                {
+                    session.Open();  // auto-start session on program startup
+                }
             }
         }
 
@@ -77,6 +83,7 @@ namespace JoeriBekker.PuttyTunnelManager
                     {
                         tunnels.Add(tunnel);
                     }
+                    
                 }
                 return tunnels;
             }

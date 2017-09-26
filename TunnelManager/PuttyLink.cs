@@ -35,6 +35,7 @@ namespace JoeriBekker.PuttyTunnelManager
         private Process process;
         private bool active;
         private bool restart = true;
+        private bool killing = false;
 
         public PuttyLink(Session session)
         {
@@ -129,7 +130,7 @@ namespace JoeriBekker.PuttyTunnelManager
 
                     string data = buffer.ToString().ToLower();
 
-                    if(plinkstart && data.Length==0)
+                    if(plinkstart && data.Length==0 && !killing)
                     {
                         // TODO: automatic accept new cert at first connection
                         // trying to pass and see if process exists.
@@ -190,6 +191,7 @@ namespace JoeriBekker.PuttyTunnelManager
         public void Stop()
         {
             restart = false;
+            killing = true;
             Debug.WriteLine("Plink: Terminating!");
             closeProccess();
         }

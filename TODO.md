@@ -1,4 +1,4 @@
-### just to for me or anybody else
+### just TODO for me and anybody else
 for making code better!
 
 * Create set of states for PuttyLink object instead of some flags.

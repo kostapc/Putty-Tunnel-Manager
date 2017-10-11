@@ -41,8 +41,8 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
         private void SettingsForm_Shown(object sender, EventArgs e)
         {
-            Core.Instance().Refresh();
-
+            //Core.Instance().Refresh();  // problem if clear opened sessions on settings form show
+                                          // need to analize and test it
             UpdateSessions();
             UpdateSettings();
         }
@@ -97,7 +97,8 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             // General
             this.sessionName.Text = session.Name;
             this.storeTunnelsSeparate.Checked = session.UsePtmForTunnels;
-
+            this.autoStartSession.Enabled = this.storeTunnelsSeparate.Checked;
+            this.autoStartSession.Checked = session.AutoStart;
             // SSH
             this.hostname.Text = session.Hostname;
             this.port.Text = session.Port.ToString();
@@ -276,10 +277,16 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                 }
 
                 this.storeTunnelsSeparate.Checked = this.selectedSession.UsePtmForTunnels;
+                //autoStartSession.Enabled = this.storeTunnelsSeparate.Checked;
                 this.selectedSession.Serialize();
 
                 this.SwitchSession(this, null);
             }
+        }
+
+        private void autoStartSession_Click(object sender, EventArgs e)
+        {
+            this.selectedSession.AutoStart = this.autoStartSession.Checked;
         }
 
         private void Field_Leave(object sender, EventArgs e)
@@ -314,6 +321,11 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
         private void SettingsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Field_Leave(this.ActiveControl, null);
+        }
+
+        private void storeTunnelsSeparate_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

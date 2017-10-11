@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace JoeriBekker.PuttyTunnelManager
 {
@@ -57,7 +58,29 @@ namespace JoeriBekker.PuttyTunnelManager
         {
             foreach (string sessionName in PuttySettings.Instance().Sessions)
             {
-                this.sessions.Add(Session.Load(sessionName));
+                Session session;
+                session = Session.Load(sessionName);
+                this.sessions.Add(session);
+                if (session.AutoStart && !session.IsOpen)
+                {
+                    // auto-start session on program startup
+                    try
+                    {
+                        session.Open();
+                    }
+                    catch (SessionAlreadyOpenException)
+                    {
+                        MessageBox.Show("Session already open.");
+                    }
+                    catch (PortAlreadyInUseException ex)
+                    {
+                        MessageBox.Show("Cannot start " + ex.Tunnel.Session.Name + ". Port " + ex.Tunnel.SourcePort + " is already in use.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    catch (PlinkNotFoundException)
+                    {
+                        MessageBox.Show("Could not find plink.exe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
 
@@ -77,6 +100,7 @@ namespace JoeriBekker.PuttyTunnelManager
                     {
                         tunnels.Add(tunnel);
                     }
+                    
                 }
                 return tunnels;
             }

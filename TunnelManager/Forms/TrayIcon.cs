@@ -53,7 +53,9 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             UserNotifications.Notify(
                 "PTM", "starting..."
             );
-            
+
+            this.UpdateSessions(); // we need to enum sessions automaticaly for start some sessions
+
         }
 
         public void UpdateSessions()

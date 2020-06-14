@@ -133,7 +133,7 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
         private void buttonDownloadPlink_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(@"http://the.earth.li/~sgtatham/putty/latest/x86/plink.exe");
+            System.Diagnostics.Process.Start(@"https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe");
         }
 
         private void buttonBrowseForPlink_Click(object sender, EventArgs e)

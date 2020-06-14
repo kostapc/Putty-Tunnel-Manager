@@ -81,7 +81,11 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
         public void SetStatus(String title, String status)
         {
-            if (this.labelStatus.InvokeRequired)
+
+            if (
+                this.labelStatus.InvokeRequired || 
+                this.labelSession.InvokeRequired
+                )
             {
                 SetTextCallback d = new SetTextCallback(SetStatus);
                 this.Invoke(d, new object[] { title, status });

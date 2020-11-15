@@ -76,6 +76,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Forms\AboutForm.cs">
@@ -111,6 +112,7 @@
       <DependentUpon>MessageForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FormUtils.cs" />
+    <Compile Include="Logging.cs" />
     <Compile Include="Tests\_TestForms.cs" />
     <Compile Include="PTMExceptions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

@@ -111,8 +111,6 @@ namespace JoeriBekker.PuttyTunnelManager
         public Point GetStartPoint(Rectangle rect)
         {
             Point point = new Point();
-            int width = rect.Width;
-            int height = rect.Height;
             switch(position)
             {
                 case Location.Left:

@@ -62,11 +62,11 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             if(Session.OpenSessions==null)
             {
                 Core.Instance().Refresh();
-            }
+            }            
 
             foreach (Session session in Session.OpenSessions)
             {
-                y += 12;
+                y += 12;                
 
                 Label sessionLabel = new Label();
                 sessionLabel.AutoSize = true;

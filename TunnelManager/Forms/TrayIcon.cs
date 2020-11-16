@@ -150,7 +150,9 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
         private void MenuSettings_Click(object sender, EventArgs e)
         {
             if (!this.settingsForm.Visible)
+            {
                 this.settingsForm.ShowDialog();
+            }
         }
 
         private void TrayIcon_MouseClick(object sender, MouseEventArgs e)
@@ -173,7 +175,9 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
         private void MenuAbout_Click(object sender, EventArgs e)
         {
             if (!this.aboutForm.Visible)
+            {
                 this.aboutForm.ShowDialog();
+            }
         }
     }
 }

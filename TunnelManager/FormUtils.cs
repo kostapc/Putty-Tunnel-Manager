@@ -25,7 +25,7 @@ namespace JoeriBekker.PuttyTunnelManager
         {
             payload.DynamicInvoke();
             var t = (System.Threading.Timer)state;
-            t.Dispose();            
+            t.Dispose();
         }
     }
 
@@ -43,10 +43,13 @@ namespace JoeriBekker.PuttyTunnelManager
             {
                 result = Int32.Parse(textBox.Text);
                 if (result <= 0)
+                {
                     throw new FormatException("Value must be positive.");
+                }
                 if (result >= 65536)
+                {
                     throw new FormatException("Value must be smaller than 65536.");
-
+                }                    
                 textBox.BackColor = SystemColors.Window;
             }
             catch (FormatException)
@@ -63,6 +66,8 @@ namespace JoeriBekker.PuttyTunnelManager
 
     public partial class InfoForm : Form
     {
+        delegate void InfoFormUpdate(Point point);
+
         public InfoForm()
         {
             updateLocation();
@@ -70,7 +75,21 @@ namespace JoeriBekker.PuttyTunnelManager
 
         public void updateLocation()
         {
-            this.Location = calculateLocation();
+            Point location = calculateLocation();
+            if (this.InvokeRequired)
+            {
+                InfoFormUpdate updateCall = new InfoFormUpdate(setLocation);
+                this.Invoke(updateCall, location);
+            }
+            else
+            {
+                setLocation(location);
+            }
+        }
+
+        private void setLocation(Point point)
+        {
+            this.Location = point;
         }
 
         private Point calculateLocation()

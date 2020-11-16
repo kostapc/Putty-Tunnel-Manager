@@ -33,7 +33,9 @@ namespace JoeriBekker.PuttyTunnelManager
         public static Core Instance()
         {
             if (Core.instance == null)
+            {
                 Core.instance = new Core();
+            }
 
             return Core.instance;
         }

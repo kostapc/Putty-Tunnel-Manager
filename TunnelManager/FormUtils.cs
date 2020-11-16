@@ -70,12 +70,12 @@ namespace JoeriBekker.PuttyTunnelManager
 
         public InfoForm()
         {
-            updateLocation();
+            UpdateLocation();
         }
 
-        public void updateLocation()
+        public void UpdateLocation()
         {
-            Point location = calculateLocation();
+            Point location = CalculateLocation();
             if (this.InvokeRequired)
             {
                 InfoFormUpdate updateCall = new InfoFormUpdate(setLocation);
@@ -92,16 +92,11 @@ namespace JoeriBekker.PuttyTunnelManager
             this.Location = point;
         }
 
-        private Point calculateLocation()
+        private Point CalculateLocation()
         {
             TaskBarInfo taskBarInfo = new TaskBarInfo();
             Point theStartPoint = taskBarInfo.GetStartPoint(this.DisplayRectangle);
             return theStartPoint;
-            /*
-            return new Point(
-                Screen.PrimaryScreen.WorkingArea.Right - this.Width,
-                Screen.PrimaryScreen.WorkingArea.Bottom - this.Height);
-            */
         }
         
     }

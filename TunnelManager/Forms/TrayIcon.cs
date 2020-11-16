@@ -63,7 +63,9 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             this.menuTunnels.Enabled = false;
 
             if (!PuttyTunnelManagerSettings.Instance().HasPlink)
+            {
                 return;
+            }
             
             this.menuTunnels.DropDownItems.Clear();
 
@@ -79,7 +81,7 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                     var allTunnels = "";
                     tunnels.ForEach((t) =>
                     {                        
-                        allTunnels += t.Type + " " + t.SourcePort + " > " + t.DestinationPort;
+                        allTunnels += "  " + t.Type + " " + t.SourcePort + " > " + t.DestinationPort;
                         if (tunnelsCounter < tunnels.Count)
                         {
                             allTunnels += "\n";
@@ -90,12 +92,14 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                     ToolStripMenuItem sessionItem = (ToolStripMenuItem)
                         this.menuTunnels.DropDownItems.Add(
                             session.Name + "\n" + allTunnels
-                    );
+                        );
                     sessionItem.Tag = session;
                     sessionItem.Click += new EventHandler(MenuSession_Click);
 
                     if (session.IsOpen)
+                    {
                         sessionItem.Checked = true;
+                    }
                 }
             }
         }

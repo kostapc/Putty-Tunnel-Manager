@@ -24,14 +24,13 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Threading;
 using JoeriBekker.PuttyTunnelManager.Forms;
 
 namespace JoeriBekker.PuttyTunnelManager
 {
     static class Program
     {
-        public static Logging Log = new Logging();
+        public static Logging Log = Loggers.WEL;
 
         public static TrayIcon TrayIcon;
 
@@ -42,9 +41,8 @@ namespace JoeriBekker.PuttyTunnelManager
             string strLoc = Assembly.GetExecutingAssembly().Location;
             FileSystemInfo fileInfo = new FileInfo(strLoc);
             string exeName = fileInfo.Name;
-            bool createdNew;
 
-            mutex = new Mutex(true, "Global\\" + exeName, out createdNew);
+            mutex = new Mutex(true, "Global\\" + exeName, out bool createdNew);
             if (createdNew)
                 mutex.ReleaseMutex();
 

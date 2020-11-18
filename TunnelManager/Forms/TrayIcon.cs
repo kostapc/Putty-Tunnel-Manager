@@ -77,21 +77,15 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                 {
                     this.menuTunnels.Enabled = true;
 
-                    var tunnelsCounter = 1;
-                    var allTunnels = "";
+                    List<string> allTunnels = new List<string>();
                     tunnels.ForEach((t) =>
-                    {                        
-                        allTunnels += "  " + t.Type + " " + t.SourcePort + " > " + t.DestinationPort;
-                        if (tunnelsCounter < tunnels.Count)
-                        {
-                            allTunnels += "\n";
-                        }
-                        tunnelsCounter++;
+                    {                                                
+                        allTunnels.Add($"  {t.Type} {t.SourcePort} > {t.DestinationPort}");                        
                     });
 
                     ToolStripMenuItem sessionItem = (ToolStripMenuItem)
                         this.menuTunnels.DropDownItems.Add(
-                            session.Name + "\n" + allTunnels
+                            session.Name + "\n" + String.Join("\n", allTunnels.ToArray())
                         );
                     sessionItem.Tag = session;
                     sessionItem.Click += new EventHandler(MenuSession_Click);

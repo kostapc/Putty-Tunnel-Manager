@@ -43,45 +43,29 @@ namespace JoeriBekker.PuttyTunnelManager
         public Tunnel(Session session, int sourcePort, string destination, int destinationPort, TunnelType type)
         {
             this.session = session;
-
             this.sourcePort = sourcePort;
             this.destination = destination;
             this.destinationPort = destinationPort;
             this.type = type;
         }
 
-        public int SourcePort
-        {
-            get { return this.sourcePort; }
-        }
-
-        public string Destination
-        {
-            get { return this.destination; }
-        }
-
-        public int DestinationPort
-        {
-            get { return this.destinationPort; }
-        }
-
-        public TunnelType Type
-        {
-            get { return this.type; }
-        }
-
-        public Session Session
-        {
-            get { return this.session; }
-        }
+        public int SourcePort => this.sourcePort;
+        public string Destination => this.destination;
+        public int DestinationPort => this.destinationPort; 
+        public TunnelType Type => this.type;
+        public Session Session => this.session;
 
         public string Serialize()
         {
             string source = this.type.ToString().Substring(0, 1) + this.sourcePort;
             if (this.type == TunnelType.DYNAMIC)
+            {
                 return source + ",";
+            }
             else
+            {
                 return source + "=" + this.destination + ":" + this.destinationPort + ",";
+            }
         }
 
         public static Tunnel Load(Session session, string data)

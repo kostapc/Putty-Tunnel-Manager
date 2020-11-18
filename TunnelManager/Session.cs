@@ -21,6 +21,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -173,7 +174,9 @@ namespace JoeriBekker.PuttyTunnelManager
         public virtual void Close()
         {
             if (this.IsOpen)
+            {
                 this.puttyLink.Stop();
+            }
 
             //if (OpenSessions.Contains(this))
             //    OpenSessions.Remove(this);
@@ -184,7 +187,9 @@ namespace JoeriBekker.PuttyTunnelManager
         public virtual void Open()
         {
             if (this.IsOpen)
+            {
                 throw new SessionAlreadyOpenException();
+            }
 
             // Rather then just checking our own tunnels, just go over TCP listeners.
             foreach (Tunnel tunnel in this.Tunnels)
@@ -202,8 +207,10 @@ namespace JoeriBekker.PuttyTunnelManager
             }
 
             this.puttyLink = new PuttyLink(this);
-            Thread thread = new Thread(new ThreadStart(this.puttyLink.Start));
-            thread.IsBackground = true;
+            Thread thread = new Thread(new ThreadStart(this.puttyLink.Start))
+            {
+                IsBackground = true
+            };
             thread.Start();
 
             //OpenSessions.Add(this);
@@ -328,8 +335,26 @@ namespace JoeriBekker.PuttyTunnelManager
             string[] portForwardingList = puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_PORTFORWARDINGS, "").ToString().Split(',');
             puttySessionKey.Close();
 
-            List<Tunnel> additionalTunnels = new List<Tunnel>();
-            foreach (string portForwarding in portForwardingList)
+            //List<Tunnel> additionalTunnels = new List<Tunnel>();
+
+            portForwardingList.Where(pf =>
+            {
+                return pf.Length > 0;
+
+            }).ToList().ForEach(pf =>
+            {
+                Tunnel t1 = Tunnel.Load(this, pf);
+                this.tunnels.Where(et=>
+                {
+                    return !et.Equals(t1);
+
+                }).ToList().ForEach(nt =>
+                {
+                    this.tunnels.Add(nt);
+                });
+            });
+
+            /*foreach (string portForwarding in portForwardingList)
             {
                 if (portForwarding.Length > 0)
                 {
@@ -338,13 +363,18 @@ namespace JoeriBekker.PuttyTunnelManager
                     foreach (Tunnel t2 in this.tunnels)
                     {
                         if (!t1.Equals(t2))
+                        {
                             additionalTunnels.Add(t1);
+                        }
                     }
                 }
-            }
+            }            
 
             foreach (Tunnel tunnel in additionalTunnels)
+            {
                 this.tunnels.Add(tunnel);
+            }
+            */
         }
     }
 }

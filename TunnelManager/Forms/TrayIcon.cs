@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace JoeriBekker.PuttyTunnelManager.Forms
@@ -77,11 +78,7 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                 {
                     this.menuTunnels.Enabled = true;
 
-                    List<string> allTunnels = new List<string>();
-                    tunnels.ForEach((t) =>
-                    {                                                
-                        allTunnels.Add($"  {t.Type} {t.SourcePort} > {t.DestinationPort}");                        
-                    });
+                    var allTunnels = tunnels.Select(t => $"  {t.Type} {t.SourcePort} > {t.DestinationPort}");
 
                     ToolStripMenuItem sessionItem = (ToolStripMenuItem)
                         this.menuTunnels.DropDownItems.Add(

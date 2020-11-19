@@ -335,24 +335,14 @@ namespace JoeriBekker.PuttyTunnelManager
             string[] portForwardingList = puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_PORTFORWARDINGS, "").ToString().Split(',');
             puttySessionKey.Close();
 
-            //List<Tunnel> additionalTunnels = new List<Tunnel>();
+            IEnumerable<Tunnel> additionalTunnels = new List<Tunnel>();
 
-            portForwardingList.Where(pf =>
+            foreach (string portForwarding in portForwardingList.Where(pf => pf.Length > 0))
             {
-                return pf.Length > 0;
-
-            }).ToList().ForEach(pf =>
-            {
-                Tunnel t1 = Tunnel.Load(this, pf);
-                this.tunnels.Where(et=>
-                {
-                    return !et.Equals(t1);
-
-                }).ToList().ForEach(nt =>
-                {
-                    this.tunnels.Add(nt);
-                });
-            });
+                Tunnel t1 = Tunnel.Load(this, portForwarding);
+                additionalTunnels = from t2 in this.tunnels where !t1.Equals(t2) select t1;
+            }
+            this.tunnels.AddRange(additionalTunnels);
 
             /*foreach (string portForwarding in portForwardingList)
             {

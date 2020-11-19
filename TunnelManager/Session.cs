@@ -343,28 +343,6 @@ namespace JoeriBekker.PuttyTunnelManager
                 additionalTunnels = from t2 in this.tunnels where !t1.Equals(t2) select t1;
             }
             this.tunnels.AddRange(additionalTunnels);
-
-            /*foreach (string portForwarding in portForwardingList)
-            {
-                if (portForwarding.Length > 0)
-                {
-                    Tunnel t1 = Tunnel.Load(this, portForwarding);
-
-                    foreach (Tunnel t2 in this.tunnels)
-                    {
-                        if (!t1.Equals(t2))
-                        {
-                            additionalTunnels.Add(t1);
-                        }
-                    }
-                }
-            }            
-
-            foreach (Tunnel tunnel in additionalTunnels)
-            {
-                this.tunnels.Add(tunnel);
-            }
-            */
         }
     }
 }

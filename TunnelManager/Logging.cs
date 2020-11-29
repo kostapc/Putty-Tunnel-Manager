@@ -7,14 +7,14 @@ namespace JoeriBekker.PuttyTunnelManager
 {
     public readonly struct Loggers
     {
-        public static Logging WEL = new Logging();
+        public static Logging WINLOG = new Logging();
     }
 
     public class Logging
     {        
 
         // https://www.jitbit.com/alexblog/266-writing-to-an-event-log-from-net-without-the-description-for-event-id-nonsense/
-        // 
+        // use predefined eventlog template
         private static readonly string SourceName = ".NET Runtime";
         private static readonly int SourceMessageId = 1000;
 

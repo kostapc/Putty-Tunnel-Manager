@@ -308,7 +308,9 @@ namespace JoeriBekker.PuttyTunnelManager
             try
             {
                 if (this.IsOpen)
+                {
                     this.Close();
+                }
 
                 Registry.CurrentUser.DeleteSubKey(this.PuttyKeyPath);
                 Registry.CurrentUser.DeleteSubKey(this.PuttyTunnelManagerKeyPath);
@@ -335,12 +337,12 @@ namespace JoeriBekker.PuttyTunnelManager
             string[] portForwardingList = puttySessionKey.GetValue(PUTTY_REGISTRY_KEY_SESSION_PORTFORWARDINGS, "").ToString().Split(',');
             puttySessionKey.Close();
 
-            IEnumerable<Tunnel> additionalTunnels = new List<Tunnel>();
+            List<Tunnel> additionalTunnels = new List<Tunnel>();
 
             foreach (string portForwarding in portForwardingList.Where(pf => pf.Length > 0))
             {
                 Tunnel t1 = Tunnel.Load(this, portForwarding);
-                additionalTunnels = from t2 in this.tunnels where !t1.Equals(t2) select t1;
+                additionalTunnels.AddRange(from t2 in this.tunnels where !t1.Equals(t2) select t1);
             }
             this.tunnels.AddRange(additionalTunnels);
         }

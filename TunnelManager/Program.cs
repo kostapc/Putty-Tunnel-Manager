@@ -30,7 +30,7 @@ namespace JoeriBekker.PuttyTunnelManager
 {
     static class Program
     {
-        public static Logging Log = Loggers.WEL;
+        public static Logging Log = Loggers.WINLOG;
 
         public static TrayIcon TrayIcon;
 
@@ -44,7 +44,9 @@ namespace JoeriBekker.PuttyTunnelManager
 
             mutex = new Mutex(true, "Global\\" + exeName, out bool createdNew);
             if (createdNew)
+            {
                 mutex.ReleaseMutex();
+            }
 
             return !createdNew;
         }

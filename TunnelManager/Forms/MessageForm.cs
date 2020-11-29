@@ -13,7 +13,7 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
         public MessageForm()
         {        
             InitializeComponent();
-            updateLocation();
+            UpdateLocation();
             formThread = new Thread(formThreadRun);
             formThread.Start();
         }
@@ -100,7 +100,7 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                     w = labelStatus.Width+25;
                 }
                 this.Width = w;
-                updateLocation();
+                UpdateLocation();
             }
         }
 

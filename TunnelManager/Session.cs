@@ -21,6 +21,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -173,7 +174,9 @@ namespace JoeriBekker.PuttyTunnelManager
         public virtual void Close()
         {
             if (this.IsOpen)
+            {
                 this.puttyLink.Stop();
+            }
 
             //if (OpenSessions.Contains(this))
             //    OpenSessions.Remove(this);
@@ -184,7 +187,9 @@ namespace JoeriBekker.PuttyTunnelManager
         public virtual void Open()
         {
             if (this.IsOpen)
+            {
                 throw new SessionAlreadyOpenException();
+            }
 
             // Rather then just checking our own tunnels, just go over TCP listeners.
             foreach (Tunnel tunnel in this.Tunnels)
@@ -202,8 +207,10 @@ namespace JoeriBekker.PuttyTunnelManager
             }
 
             this.puttyLink = new PuttyLink(this);
-            Thread thread = new Thread(new ThreadStart(this.puttyLink.Start));
-            thread.IsBackground = true;
+            Thread thread = new Thread(new ThreadStart(this.puttyLink.Start))
+            {
+                IsBackground = true
+            };
             thread.Start();
 
             //OpenSessions.Add(this);
@@ -301,7 +308,9 @@ namespace JoeriBekker.PuttyTunnelManager
             try
             {
                 if (this.IsOpen)
+                {
                     this.Close();
+                }
 
                 Registry.CurrentUser.DeleteSubKey(this.PuttyKeyPath);
                 Registry.CurrentUser.DeleteSubKey(this.PuttyTunnelManagerKeyPath);
@@ -329,22 +338,13 @@ namespace JoeriBekker.PuttyTunnelManager
             puttySessionKey.Close();
 
             List<Tunnel> additionalTunnels = new List<Tunnel>();
-            foreach (string portForwarding in portForwardingList)
+
+            foreach (string portForwarding in portForwardingList.Where(pf => pf.Length > 0))
             {
-                if (portForwarding.Length > 0)
-                {
-                    Tunnel t1 = Tunnel.Load(this, portForwarding);
-
-                    foreach (Tunnel t2 in this.tunnels)
-                    {
-                        if (!t1.Equals(t2))
-                            additionalTunnels.Add(t1);
-                    }
-                }
+                Tunnel t1 = Tunnel.Load(this, portForwarding);
+                additionalTunnels.AddRange(from t2 in this.tunnels where !t1.Equals(t2) select t1);
             }
-
-            foreach (Tunnel tunnel in additionalTunnels)
-                this.tunnels.Add(tunnel);
+            this.tunnels.AddRange(additionalTunnels);
         }
     }
 }

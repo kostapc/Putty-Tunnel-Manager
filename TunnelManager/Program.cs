@@ -24,13 +24,14 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-
 using JoeriBekker.PuttyTunnelManager.Forms;
 
 namespace JoeriBekker.PuttyTunnelManager
 {
     static class Program
     {
+        public static Logging Log = Loggers.WINLOG;
+
         public static TrayIcon TrayIcon;
 
         private static Mutex mutex;
@@ -40,11 +41,12 @@ namespace JoeriBekker.PuttyTunnelManager
             string strLoc = Assembly.GetExecutingAssembly().Location;
             FileSystemInfo fileInfo = new FileInfo(strLoc);
             string exeName = fileInfo.Name;
-            bool createdNew;
 
-            mutex = new Mutex(true, "Global\\" + exeName, out createdNew);
+            mutex = new Mutex(true, "Global\\" + exeName, out bool createdNew);
             if (createdNew)
+            {
                 mutex.ReleaseMutex();
+            }
 
             return !createdNew;
         }
@@ -55,6 +57,8 @@ namespace JoeriBekker.PuttyTunnelManager
         [STAThread]
         public static void Main()
         {
+            Log.WriteMessage("PTM starting");
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(ErrosHandler);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -68,5 +72,11 @@ namespace JoeriBekker.PuttyTunnelManager
             Application.Run();
             TrayIcon = null;
         }
+
+        static void ErrosHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+            Log.WriteError(args.ExceptionObject, "unhandled error from " + sender.ToString());
+        }
     }
+
 }

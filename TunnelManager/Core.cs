@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace JoeriBekker.PuttyTunnelManager
@@ -33,7 +34,9 @@ namespace JoeriBekker.PuttyTunnelManager
         public static Core Instance()
         {
             if (Core.instance == null)
+            {
                 Core.instance = new Core();
+            }
 
             return Core.instance;
         }
@@ -84,25 +87,16 @@ namespace JoeriBekker.PuttyTunnelManager
             }
         }
 
-        public List<Session> Sessions
+        public IEnumerable<Session> Sessions
         {
             get { return this.sessions; }
         }
 
-        public List<Tunnel> Tunnels
+        public IEnumerable<Tunnel> Tunnels
         {
             get
             {
-                List<Tunnel> tunnels = new List<Tunnel>();
-                foreach (Session session in this.Sessions)
-                {
-                    foreach (Tunnel tunnel in session.Tunnels)
-                    {
-                        tunnels.Add(tunnel);
-                    }
-                    
-                }
-                return tunnels;
+                return Sessions.SelectMany(session => session.Tunnels);
             }
         }
     }

@@ -27,16 +27,14 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 {
     public partial class TipForm : InfoForm
     {
+
+        private static readonly Font f = new Font("Courier New", 9);
+
         public TipForm()
         {
             InitializeComponent();
 
-            updateLocation();
-            /*
-            this.Location = new Point(
-                Screen.PrimaryScreen.WorkingArea.Right - this.Width,
-                Screen.PrimaryScreen.WorkingArea.Bottom - this.Height);
-            */
+            UpdateLocation();
         }
 
         private void TipForm_Shown(object sender, EventArgs e)
@@ -49,34 +47,51 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             this.Close();
         }
 
-        private void UpdateSessions()
+        // possible null pointer exception after resuming from hibernation
+        private void ReinitInstance()
         {
-            this.SuspendLayout();
-            this.Controls.Clear();
-
-            Font f = new Font("Courier New", 9);
-
-            int y = 0;
-            int maxWidth = 0;
-
-            if(Session.OpenSessions==null)
-            {
+            if (Session.OpenSessions == null)
+            {                
                 Core.Instance().Refresh();
             }
 
             foreach (Session session in Session.OpenSessions)
             {
+                if (session.Tunnels == null)
+                {
+                    Core.Instance().Refresh();
+                    break;
+                }
+            }
+        }
+
+        private void UpdateSessions()
+        {
+            this.SuspendLayout();
+            this.Controls.Clear();            
+
+            int y = 0;
+            int maxWidth = 0;
+
+            ReinitInstance();
+
+            foreach (Session session in Session.OpenSessions)
+            {
                 y += 12;
 
-                Label sessionLabel = new Label();
-                sessionLabel.AutoSize = true;
-                sessionLabel.Location = new Point(12, y);
-                sessionLabel.Font = SystemFonts.StatusFont;
-                sessionLabel.Text = session.Name;
+                Label sessionLabel = new Label
+                {
+                    AutoSize = true,
+                    Location = new Point(12, y),
+                    Font = SystemFonts.StatusFont,
+                    Text = session.Name
+                };
 
                 this.Controls.Add(sessionLabel);
                 if (maxWidth < sessionLabel.Width + 12)
+                {
                     maxWidth = sessionLabel.Width + 12;
+                }
 
                 y += 18;
 
@@ -84,32 +99,38 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                 {
                     int x = 12;
 
-                    Label sourcePortLabel = new Label();
-                    sourcePortLabel.AutoSize = true;
-                    sourcePortLabel.Location = new Point(x, y);
-                    sourcePortLabel.ForeColor = SystemColors.ControlDarkDark;
-                    sourcePortLabel.Font = SystemFonts.StatusFont;
-                    sourcePortLabel.Text = tunnel.SourcePort.ToString();
+                    Label sourcePortLabel = new Label
+                    {
+                        AutoSize = true,
+                        Location = new Point(x, y),
+                        ForeColor = SystemColors.ControlDarkDark,
+                        Font = SystemFonts.StatusFont,
+                        Text = tunnel.SourcePort.ToString()
+                    };
 
                     this.Controls.Add(sourcePortLabel);
                     x += sourcePortLabel.Width + 2;
 
-                    Label connectionLabel = new Label();
-                    connectionLabel.AutoSize = true;
-                    connectionLabel.Location = new Point(x, y);
-                    connectionLabel.ForeColor = Color.ForestGreen;
-                    connectionLabel.Font = f;
-                    connectionLabel.Text = "==";
+                    Label connectionLabel = new Label
+                    {
+                        AutoSize = true,
+                        Location = new Point(x, y),
+                        ForeColor = Color.ForestGreen,
+                        Font = f,
+                        Text = "=="
+                    };
 
                     this.Controls.Add(connectionLabel);
                     x += connectionLabel.Width + 3;
 
-                    Label tunnelLabel = new Label();
-                    tunnelLabel.Location = new Point(x, y);
-                    tunnelLabel.ForeColor = SystemColors.ControlDarkDark;
-                    tunnelLabel.Font = SystemFonts.StatusFont;
-                    tunnelLabel.Text = tunnel.Destination + ":" + tunnel.DestinationPort.ToString();
-                    tunnelLabel.AutoSize = true;
+                    Label tunnelLabel = new Label
+                    {
+                        Location = new Point(x, y),
+                        ForeColor = SystemColors.ControlDarkDark,
+                        Font = SystemFonts.StatusFont,
+                        Text = tunnel.Destination + ":" + tunnel.DestinationPort.ToString(),
+                        AutoSize = true
+                    };
 
                     this.Controls.Add(tunnelLabel);
 
@@ -122,13 +143,7 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
 
             this.Size = new Size(maxWidth + 12, y + 12);
 
-            updateLocation();
-            /*
-            this.Location = new Point(
-                Screen.PrimaryScreen.WorkingArea.Right - this.Width,
-                Screen.PrimaryScreen.WorkingArea.Bottom - this.Height);
-            */
-                
+            UpdateLocation();
 
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -57,20 +57,9 @@ namespace JoeriBekker.PuttyTunnelManager
             return guardian;
         }
 
-        public Session Session
-        {
-            get { return this.session; }
-        }
-
-        public bool IsActive
-        {
-            get { return this.active; }
-        }
-
-        public void Start()
-        {
-            this.Start(true);
-        }
+        public Session Session => this.session;
+        public bool IsActive => this.active;
+        public void Start() => this.Start(true);       
 
         public void Start(bool interactive)
         {

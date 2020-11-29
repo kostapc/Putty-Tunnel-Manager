@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace JoeriBekker.PuttyTunnelManager.Forms
@@ -63,7 +64,9 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
             this.menuTunnels.Enabled = false;
 
             if (!PuttyTunnelManagerSettings.Instance().HasPlink)
+            {
                 return;
+            }
             
             this.menuTunnels.DropDownItems.Clear();
 
@@ -75,12 +78,19 @@ namespace JoeriBekker.PuttyTunnelManager.Forms
                 {
                     this.menuTunnels.Enabled = true;
 
-                    ToolStripMenuItem sessionItem = (ToolStripMenuItem)this.menuTunnels.DropDownItems.Add(session.Name);
+                    var allTunnels = tunnels.Select(t => $"  {t.Type} {t.SourcePort} > {t.DestinationPort}");
+
+                    ToolStripMenuItem sessionItem = (ToolStripMenuItem)
+                        this.menuTunnels.DropDownItems.Add(
+                            session.Name + "\n" + String.Join("\n", allTunnels.ToArray())
+                        );
                     sessionItem.Tag = session;
                     sessionItem.Click += new EventHandler(MenuSession_Click);
 
                     if (session.IsOpen)
+                    {
                         sessionItem.Checked = true;
+                    }
                 }
             }
         }

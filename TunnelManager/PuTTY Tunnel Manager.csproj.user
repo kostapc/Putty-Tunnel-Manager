@@ -3,7 +3,7 @@
   <PropertyGroup>
     <EnableSecurityDebugging>false</EnableSecurityDebugging>
     <PublishUrlHistory>publish\</PublishUrlHistory>
-    <InstallUrlHistory>https://github.com/kostapc/Putty-Tunnel-Manager/releases/</InstallUrlHistory>
+    <InstallUrlHistory />
     <SupportUrlHistory />
     <UpdateUrlHistory />
     <BootstrapperUrlHistory />

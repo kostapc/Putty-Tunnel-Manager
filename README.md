@@ -21,4 +21,4 @@ PuTTY Tunnel Manager allows you to easily open tunnels, that are defined in a Pu
 The original source code comes from https://code.google.com/archive/p/putty-tunnel-manager/
 
 ## project status
-2022, maintained!
+2023, maintained!

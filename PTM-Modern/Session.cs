@@ -19,13 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
-using System.Threading;
 using Microsoft.Win32;
 
 namespace JoeriBekker.PuttyTunnelManager
@@ -99,12 +95,12 @@ namespace JoeriBekker.PuttyTunnelManager
 
         public string PuttyKeyPath
         {
-            get { return PuttySettings.PUTTY_REGISTRY_KEYPATH_SESSIONS + @"\" + Uri.EscapeUriString(this.name); }
+            get { return PuttySettings.PUTTY_REGISTRY_KEYPATH_SESSIONS + @"\" + Uri.EscapeDataString(this.name); }
         }
 
         public string PuttyTunnelManagerKeyPath
         {
-            get { return PuttyTunnelManagerSettings.PTM_REGISTRY_KEYPATH_SESSIONS + @"\" + Uri.EscapeUriString(name); }
+            get { return PuttyTunnelManagerSettings.PTM_REGISTRY_KEYPATH_SESSIONS + @"\" + Uri.EscapeDataString(name); }
         }
 
         public string Name
